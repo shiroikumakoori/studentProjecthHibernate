@@ -1,0 +1,114 @@
+package org.dxc.service;
+
+import java.util.Iterator;
+import java.util.List;
+
+import org.dxc.Bean.Student;
+
+import org.dxc.factorydesign.HibernateFactory;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+
+public class StudentServiceImplementation implements IStudentService {
+
+	@Override
+	public Integer insert(Student s) {
+	
+		SessionFactory factory = HibernateFactory.getFactoryObject();
+		Session session = factory.openSession();
+		Transaction  tx =session.beginTransaction();
+		Integer id = (Integer) session.save(s);
+		tx.commit();
+		session.close();
+		return id ;
+	}
+
+	@SuppressWarnings("finally")
+	@Override
+	public List<Student> getAllStudent() {
+		SessionFactory factory = HibernateFactory.getFactoryObject();
+		Session session = factory.openSession();
+		Transaction  tx = null; 
+		List<Student> students = null ;
+	      try {
+	         tx = session.beginTransaction();
+	         students =(List) session.createQuery("FROM Student").list(); 
+	   
+	         tx.commit();
+	   
+	      } catch (HibernateException e) {
+	         if (tx!=null) tx.rollback();
+	         e.printStackTrace(); 
+	      } finally {
+	         session.close(); 
+	         return students; 
+	      }
+	}
+
+	@Override
+	public Student getById(int id) {
+	
+		SessionFactory factory = HibernateFactory.getFactoryObject();
+		Session session = factory.openSession();
+		Transaction  tx = null; 
+		try {
+			tx = session.beginTransaction();
+			Student student = (Student) session.get(Student.class, id);
+			tx.commit();
+			return student;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return null;
+			// TODO: handle exception
+		}
+		finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public void updateRecord(Student s) {
+
+		SessionFactory factory = HibernateFactory.getFactoryObject();
+		Session session = factory.openSession();
+		Transaction  tx = null; 
+		 
+	      try {
+	         tx = session.beginTransaction();
+	         Student student = (Student)session.get(Student.class, s.getSid()); 
+	         student.setSname( s.getSname() );
+	         student.setSaddr(s.getSaddr());
+			 session.update(student); 
+	         tx.commit();
+	      } catch (HibernateException e) {
+	         if (tx!=null) tx.rollback();
+	         e.printStackTrace(); 
+	      } finally {
+	         session.close(); 
+	      }
+		
+	}
+
+	@Override
+	public void deleteRecord(int d) {
+		
+		SessionFactory factory = HibernateFactory.getFactoryObject();
+		Session session = factory.openSession();
+		Transaction  tx = null; 
+		  try {
+		         tx = session.beginTransaction();
+		         Student student = (Student)session.get(Student.class, d); 
+		         session.delete(student); 
+		         tx.commit();
+		      } catch (HibernateException e) {
+		         if (tx!=null) tx.rollback();
+		         e.printStackTrace(); 
+		      } finally {
+		         session.close(); 
+		      }
+		
+	}
+
+}
