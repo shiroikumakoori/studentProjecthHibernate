@@ -2,11 +2,12 @@ package org.dxc.entity;
 
 import java.util.List;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
+
+
 
 
 @Entity
-
 public class Question {
 
 		@Id

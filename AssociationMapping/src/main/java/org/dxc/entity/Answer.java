@@ -1,6 +1,8 @@
 package org.dxc.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
+
+
 
 @Entity
 

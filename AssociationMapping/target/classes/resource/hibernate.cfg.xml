@@ -6,10 +6,10 @@
    		
    		  <!--if table dont exist, create else just udpate-->
    	<property name="hbm2ddl.auto">
-   		update
+   		create
    	</property>
       <property name = "hibernate.dialect">
-         org.hibernate.dialect.MySQLDialect
+         org.hibernate.dialect.MySQL8Dialect
       </property>
       
       <property name = "hibernate.connection.driver_class">
@@ -35,6 +35,16 @@
             <!-- List of XML mapping files -->
       <mapping class ="org.dxc.entity.Question"></mapping>
       <mapping class ="org.dxc.entity.Answer"></mapping>
+      
+      <mapping class ="org.dxc.ManyToOne.Entity.Address"></mapping>
+      <mapping class ="org.dxc.ManyToOne.Entity.FamilyMember"></mapping>
+  
+  	  <mapping class ="org.dxc.ManyToMany.Entity.QuestionMany"></mapping>
+      <mapping class ="org.dxc.ManyToMany.Entity.AnswerMany"></mapping>
+  
+  	  <mapping class ="org.dxc.OneToOne.Entity.Wife"></mapping>
+      <mapping class ="org.dxc.OneToOne.Entity.Husband"></mapping>
+  
 
       
    </session-factory>
