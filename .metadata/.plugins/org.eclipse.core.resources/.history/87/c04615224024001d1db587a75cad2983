@@ -1,0 +1,102 @@
+package carServiceSystem;
+
+import com.mysql.cj.jdbc.MysqlDataSource;
+
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+public class AdminModel extends PersonModel {
+
+
+	public AdminModel() {
+		this._tb= "tb_AdminCredentials";
+		try
+		{
+			MysqlDataSource myDS = new MysqlDataSource() ;
+			myDS.setUser("root");
+			myDS.setPassword("ME12345");
+			myDS.setServerName("test");
+			myDS.setDatabaseName("student");
+			myDS.setURL("jdbc:mysql://localhost:3306/sample_dxc");
+			con = myDS.getConnection();
+			System.out.println("connect to database");
+
+	        Statement stmt = con.createStatement();
+	  	      
+	          String sql = 
+	        		  "CREATE TABLE IF NOT EXISTS "+ this._tb +
+//	                   "(id INTEGER not NULL, " +
+	        		   "(" +
+        			   "userName VARCHAR(255), " +
+	                   "password VARCHAR(255), " + 		                
+	                   "PRIMARY KEY ( id ))"; 
+
+	        stmt.executeUpdate(sql);
+	        try
+
+	        {
+	        	var query = "select * from "+ _tb +" where id=1 ";
+	        	pstmt = con.prepareStatement(query);
+	        	ResultSet  res = pstmt.executeQuery();
+	        	if(res.next())
+	        	{
+	        		System.out.println("default admin exist.");
+	        		
+	        	}
+	        	else {
+	        		System.out.println("default admin does not exist, lets create.");
+	        		
+			        query = "insert into "+ _tb+" values(?, ?, ?)";
+			 		pstmt = con.prepareStatement(query);
+					
+			 		pstmt.setInt(1,1);
+			 		pstmt.setString(2, "admin");
+			 		pstmt.setString(3,"admin");
+		
+			 		int row = pstmt.executeUpdate();
+	        	}
+	        }
+	        catch (Exception e) {
+				// TODO: handle exception
+	        	
+		 		
+	        }
+	         
+//	         var query = "select * from "+ adminTb +
+//						"where " +this.getUserName() + "=?"+ " AND " + this.getPassword() + " =?";
+//	         System.out.println("Created table in given database...");   	  
+		    
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      } 
+
+	}
+	
+	@Override
+	public int insertEntry() {
+		var query = "insert into "+ _tb+" values(?, ?, ?)";
+		try
+		{
+			pstmt = con.prepareStatement(query);
+	
+		
+
+			pstmt.setString(2,_userName);
+			pstmt.setString(3,_password);
+			
+			int row = pstmt.executeUpdate();
+			return row;
+
+		}
+		catch (Exception e) {
+			System.out.println( e.getMessage());
+			// TODO: handle exception
+			return 0;
+		}
+	}
+	
+	
+
+}

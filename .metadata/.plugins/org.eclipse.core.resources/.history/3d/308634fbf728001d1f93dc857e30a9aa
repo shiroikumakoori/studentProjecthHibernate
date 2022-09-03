@@ -1,0 +1,84 @@
+package org.dxc.controller;
+
+import java.util.Scanner;
+
+import org.dxc.Bean.Student;
+import org.dxc.factorydesign.ServiceFactory;
+import org.dxc.service.IStudentService;
+import org.dxc.service.StudentServiceImplementation;
+import org.hibernate.cfg.Configuration;
+
+
+
+public class App {
+	enum Student_TestCase
+	{
+		insert_record,
+		get_record,
+		view_allRecord,
+		delete_record,
+		exit_app
+	}
+	static Scanner scan =  new Scanner(System.in);
+	Student_TestCase c = Student_TestCase.view_allRecord;
+	public void run()
+	{
+		Student s = new Student();
+		IStudentService service = ServiceFactory.getService();
+		boolean isNotStopping = true;
+		while(isNotStopping)
+		{
+			
+			switch (c) {
+			case insert_record:
+				s.setSname("hi");
+				s.setSid(1);
+				s.setSaddr("somewher");
+				service.insert(s);
+				break;
+			case get_record:
+				System.out.println("get record");
+				service.getById(1);
+				break;
+				
+			case delete_record:
+				System.out.println("deleting ");
+				service.deleteRecord(1);
+				break;
+			case exit_app:
+				isNotStopping = false;
+				System.out.println("attempting to end program");
+				break;
+			
+			case view_allRecord:
+				System.out.println("get all student");
+				service.getAllStudent();
+	//			System.out.println("Student SID:");
+	//			sid=scan.next();
+	//			std=studentService.searchDetail(sid); 
+	//			BufferedReader b=new BufferedReader(new InputStreamReader(System.in));
+	//			System.out.print("Student Name[old name:"+std.getSname()+"]:");
+	//			sname=b.readLine(); 
+	//			if(sname==null ||sname=="") 
+	//			{ 
+	//				sname=std.getSname(); 
+	//			} 
+	//			System.out.print("Student Address[old address:"+std.getSaddr()+"]:");
+	//			saddr=b.readLine(); 
+	//			if(saddr==null||saddr=="") 
+	//			{
+	//					saddr=std.getSaddr();
+	//			}
+	//			std=new Student();
+	//			std.setSid(sid); 
+	//			std.setSname(sname); 
+	//			std.setSaddr(saddr); 
+	//			status=studentService.updateDetails(std);
+				break;
+			default:
+				break;
+	
+			}
+		}
+	}
+}

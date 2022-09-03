@@ -1,0 +1,64 @@
+
+
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import carServiceSystem.AdminModel;
+import carServiceSystem.CarModel;
+import carServiceSystem.CustomerModel;
+
+/**
+ * Servlet implementation class ViewCustomerController
+ */
+public class ViewCustomerController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+		
+		HttpSession session = request.getSession(true);
+		AdminModel m  =(AdminModel) session.getAttribute("adminModelObject");
+		CustomerModel t= new CustomerModel();
+
+		List<CustomerModel> listCus = t.getAllcus() ;
+		Iterator itr; 
+		CarModel car;
+		String ser ="";
+		String status="";
+		for(itr = listCus.iterator(); itr.hasNext();)
+		{
+			((CustomerModel)itr.next()).getName();
+			car = ((CustomerModel)itr.next()).get_car(); 
+			if(car != null)
+			{
+				ser =car.get_serReq();
+				status = Boolean.toString( car.is_status());
+			}
+		}
+	
+		session.setAttribute("listOfCus",listCus);
+		
+		if(listCus != null)
+		{
+			System.out.println("list created ");
+			session.setAttribute("listOfCus",listCus);
+			response.sendRedirect("/carServiceSystem/viewAllCustomer.jsp");
+		}		
+		else  {
+			System.out.println("Something went wrong ");
+			response.sendRedirect("/carServiceSystem/viewPendingRequest.jsp");
+			
+		}
+
+		
+	}
+
+
+}

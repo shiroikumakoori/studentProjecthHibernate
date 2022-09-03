@@ -1,0 +1,268 @@
+package org.bankModels;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.sql.Types;
+import java.util.List;
+
+import org.apache.jasper.tagplugins.jstl.core.ForEach;
+
+import java.sql.ResultSet;
+
+import com.mysql.cj.jdbc.MysqlDataSource;
+
+
+public class DbFunction {
+
+	enum TBs
+	{
+		tb_customerdetails,
+		tb_admindetails,
+		tb_transaction,
+		tb_loans
+	}
+
+	
+	protected String _tb;
+	static PreparedStatement pstmt= null;
+	static Connection con = null ;
+	static ResultSet res = null;
+	static
+	{
+		initDbConnection();
+	}
+
+	
+	static boolean hasSomething()
+	{
+		try {
+			if(res.next()) return true;
+			else {
+				return false; 
+			}	
+		} catch (Exception e) {
+			// TODO: handle exception
+			return false ;
+		}
+		
+	}
+	static void setQuery(String query)
+	{
+		try {
+			
+			pstmt = con.prepareStatement(query);
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	static void setValues(List paras) {
+		
+		try {
+			for (int i = 0 ; i< paras.size();i++) {
+				var obj = paras.get(i);
+				
+				 System.out.println(obj);
+				
+					 
+				if(obj instanceof Integer){
+						pstmt.setInt(i+1,((Integer)obj));
+		
+			        }
+				else if(obj instanceof String)
+				{
+					 String res = (String)obj;
+					 if(!res.equals("''")) {
+						pstmt.setString(i+1,res);
+					 }
+					 else
+					 {
+						 pstmt.setNull(i+1, Types.VARCHAR);
+					 }
+						
+				}
+				 
+				
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+		}
+		
+
+	}
+	static void executeQuery()
+	{
+		try {
+			res = pstmt.executeQuery();
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	static int executeUpdate() throws Exception
+	{
+		int row = pstmt.executeUpdate();
+		return row;
+	}
+	static void  initDbConnection()
+	{
+		try
+		{
+			MysqlDataSource myDS = new MysqlDataSource() ;
+			myDS.setUser("root");
+			myDS.setPassword("ME12345");
+			myDS.setServerName("test");
+			myDS.setDatabaseName("student");
+			myDS.setURL("jdbc:mysql://localhost:3306/sample_dxc");
+			con = myDS.getConnection();
+			System.out.println("connect to database");
+		}
+		catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+	}
+	static String insertStringValue(int size)
+	{
+		String r="(";
+		for(int i = 0; i< size-1 ; i++)
+		{
+			r+="?,";
+		}
+		r+="?)";
+		return r;
+	}
+	static int insertEntry(TBs tb, List l, String tablePostFix )
+	{
+		
+		var query = "insert into "+ tb.toString()+tablePostFix+" values"+ insertStringValue(l.size());
+		
+		try
+		{
+			setQuery(query);
+			setValues(l);
+			executeQuery();
+			
+		
+			
+			int row = pstmt.executeUpdate();
+			return row;
+
+		}
+		catch (Exception e) {
+			System.out.println( e.getMessage());
+			// TODO: handle exception
+			return 0;
+		}
+	}
+	static int insertEntry(TBs tb, List l)
+	{
+		
+		var query = "insert into "+ tb.toString()+" values"+ insertStringValue(l.size());
+		
+		try
+		{
+			setQuery(query);
+			setValues(l);
+			executeQuery();
+			
+		
+			
+			int row = pstmt.executeUpdate();
+			return row;
+
+		}
+		catch (Exception e) {
+			System.out.println( e.getMessage());
+			// TODO: handle exception
+			return 0;
+		}
+	}
+	static ResultSet  getEntry(TBs tb, List l , String q )
+	{
+		try {			
+				
+				String query = "select * from "+ tb.toString() + "  "+q;
+				setQuery(query);
+				setValues(l);
+				executeQuery();
+				return res;
+				
+		     
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+			return null;
+		}
+
+	}
+	static void updateEntry(TBs tb, List l, String q )
+	{
+//		var query = "update "+tb.toString()+" set "+"serviceReq=?, status=? where cusUserName=?";
+		var query = "update "+tb.toString()+" set "+q;
+		try
+		{
+			setQuery(query);
+			setValues(l);
+			int row = executeUpdate();
+
+			if(row == 1)
+			{
+				System.out.println("update sucessful");
+			}
+        	else {
+        		System.out.println("udpate fail ");
+        	}
+
+		}
+		catch (Exception e) {
+			System.out.println( e.getMessage());
+			// TODO: handle exception
+			
+		}
+	}
+	
+	static void createTableWholeQuery(String q)
+	{
+		try
+		{
+
+
+	        Statement stmt = con.createStatement();
+
+	        stmt.executeUpdate(q);
+	        System.out.println("table creation sucessful");
+		    
+	      } catch (Exception e) {
+	    	  System.out.println("table creation fail");
+	         e.printStackTrace();
+	      } 	
+	}
+	
+
+	void CreateTable(String tb) {
+		try
+		{
+
+
+	        Statement stmt = con.createStatement();
+	  	      
+	          String sql = 
+	        		  "CREATE TABLE IF NOT EXISTS "+ tb +	                	
+	        		   "(email VARCHAR(255), " +
+	        		   "name VARCHAR(255), "+
+	    			   "userName VARCHAR(255), " +
+	                   "password VARCHAR(255), " + 		                
+	                   "PRIMARY KEY ( email ))"; 
+
+	        stmt.executeUpdate(sql);
+
+		    
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      } 	
+	}
+	
+}

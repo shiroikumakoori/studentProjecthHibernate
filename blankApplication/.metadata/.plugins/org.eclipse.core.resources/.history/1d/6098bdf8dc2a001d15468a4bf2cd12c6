@@ -1,0 +1,61 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+                       <%@page language="java" import="java.util.*" %>
+       <%@page language="java" import="org.bankModels.*" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+
+
+<form action="/bankApplication/UpdateSelectedLoanController" >
+	<table>
+		<%Iterator itr; 
+		
+			String name ="";
+			String userName="";
+			int amt = 0;
+		%>
+		<%List<LoanModel> listCus =(List<LoanModel>) session.getAttribute("listOfCus");
+		for(int i = 0 ;i < listCus.size() ; i++)
+		{
+			LoanModel cus = (listCus.get(i));
+		
+		%>
+			
+		
+		<tr>
+		<td><%=i%>  </td>
+		<td><input  name="selectedName" value="<%=cus.get_userName()%>"> </td>
+		<td><%=cus.get_amt() %> </td>
+		<td> <input type="text" name="selectedLoanType" value="<%=cus.get_loanType()%>"></td>
+		<td> <input type="text" name="selectedComment" value="<%=cus.get_comments()%>"></td>
+		<td>
+		  <input type="radio" id="html" name="Choice" value="Approve">
+		  <label for="Approve">HTML</label><br>
+		  <input type="radio" id="css" name="Choice" value="Reject">
+		  <label for="Reject">CSS</label><br>
+		</td>
+		
+		<td>
+			 <input type="submit"> Approve 
+		
+		</td>
+		</tr>
+	
+		<%}%>
+	</table>
+</form>
+
+<form action="/bankApplication/UpdateSelectedLoanController" >
+		  <input type="radio" id="html" name="Choice" value="Approve">
+		  <label for="Approve">HTML</label><br>
+		  <input type="radio" id="css" name="Choice" value="Reject">
+		  <label for="Reject">CSS</label><br>
+</form>	
+</body>
+</html>

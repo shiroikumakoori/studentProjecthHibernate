@@ -1,0 +1,85 @@
+package carServiceSystem;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+import com.mysql.cj.jdbc.MysqlDataSource;
+
+public class CarModel {
+	
+	PreparedStatement pstmt= null;
+	Connection con = null ;
+	ResultSet res = null;
+	
+	
+	protected String _tb;
+	protected String _cusUserName;
+	protected String _model;
+	protected String _fuelType;
+	protected String _regNum;
+	protected boolean _serReq;
+	protected boolean _status;
+	
+	public CarModel() {
+		this._tb= "tb_CarDetails";
+		try
+		{
+			MysqlDataSource myDS = new MysqlDataSource() ;
+			myDS.setUser("root");
+			myDS.setPassword("ME12345");
+			myDS.setServerName("test");
+			myDS.setDatabaseName("student");
+			myDS.setURL("jdbc:mysql://localhost:3306/sample_dxc");
+			con = myDS.getConnection();
+			System.out.println("connect to database");
+
+	        Statement stmt = con.createStatement();
+	  	      
+	          String sql = 
+	        		  "CREATE TABLE IF NOT EXISTS "+ this._tb +
+//	                   "(id INTEGER not NULL, " +
+	        		   "(" +
+	        		   "cusUserName VARCHAR(255), "+
+        			   "carModel VARCHAR(255), " +
+	                   "carFuelType VARCHAR(255), " +
+        			   "carRegNum VARCHAR(255), "+
+	                   "serviceReq TINYINT(), "+
+        			   "status TINYINT(), "+
+	                   "PRIMARY KEY ( cusUserName )"
+	                   + ")";
+
+	        stmt.executeUpdate(sql);
+
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      } 
+	}
+	public int insertEntry()
+	{
+		var query = "insert into "+ _tb+" values(?, ?, ?, ?, ?, ?)";
+		try
+		{
+			pstmt = con.prepareStatement(query);
+	
+			pstmt.setString(1, _cusUserName);
+			pstmt.setString(2, _model);
+			pstmt.setString(3, _fuelType);
+			pstmt.setString(4, _regNum);
+			pstmt.setInt(5, _serReq);
+			pstmt.setInt(6, _status);
+			
+			
+			int row = pstmt.executeUpdate();
+			return row;
+
+		}
+		catch (Exception e) {
+			System.out.println( e.getMessage());
+			// TODO: handle exception
+			return 0;
+		}
+	}
+	
+}

@@ -1,0 +1,76 @@
+package com.dxc.Hiberante;
+
+
+import org.dxc.entity.Employee;
+import org.dxc.entity.ManageEmployee;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+
+/**
+ * Hello world!
+ *
+ */
+public class App 
+{
+	private static SessionFactory factory;
+    public static void main( String[] args )
+    {
+        System.out.println( "Hello World!" );
+        try {
+			factory = new Configuration().configure("resource/hibernate.cfg.xml").buildSessionFactory();
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			
+		}
+        
+//        ManageEmployee ME = new ManageEmployee();
+        
+        App employee = new App();
+        Integer empID1 =employee.addEmployee("what", "WorkForCheap", 1);
+        Integer empID2 =employee.addEmployee("what", "WorkForex", 100000);
+        Integer empID3 =employee.addEmployee("what", "Free", 0);
+        
+        /* List down all the employees */
+//        ME.listEmployees();
+//
+//        /* Update employee's records */
+//        ME.updateEmployee(empID1, 5000);
+//
+//        /* Delete an employee from the database */
+//        ME.deleteEmployee(empID2);
+//
+//        /* List down new list of the employees */
+//        ME.listEmployees();
+    }
+    @SuppressWarnings("deprecation")
+	public Integer addEmployee(String fname, String lname, int salary)
+    {
+    	Session session= factory.openSession();
+    	Transaction tx = null; 
+    	Integer employeeID=null;
+    	try {
+    		//objcet model is ready
+    		tx = session.beginTransaction();
+    		Employee employee = new Employee(fname, lname,salary);
+    		//add it to relationnal model 
+    		employeeID = (Integer)(session.save(employee));
+    		tx.commit();
+    		System.out.println("created succefully");
+    		return employeeID;
+    		
+		} catch (Exception e) {
+			// TODO: handle exception
+			if(tx!=null)
+				tx.rollback();
+				e.printStackTrace();
+			return -1;
+		} finally {
+			
+		}
+    	
+    }
+}

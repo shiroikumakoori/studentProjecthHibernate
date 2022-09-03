@@ -1,0 +1,5 @@
+package org.dxc.factorydesign;
+
+public class HibernateFactory {
+
+}

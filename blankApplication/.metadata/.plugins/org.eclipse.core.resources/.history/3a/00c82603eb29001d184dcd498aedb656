@@ -1,0 +1,51 @@
+package org.bank;
+import java.util.ArrayList;
+import java.util.List;
+
+public class LoanModel {
+	DbFunction.TBs _tb ; 
+	String _userName;
+	int	   _amt;
+	String _loanType;
+	public String get_userName() {
+		return _userName;
+	}
+	public void set_userName(String _userName) {
+		this._userName = _userName;
+	}
+	public int get_amt() {
+		return _amt;
+	}
+	public void set_amt(int _amt) {
+		this._amt = _amt;
+	}
+	public String get_loanType() {
+		return _loanType;
+	}
+	public void set_loanType(String _loanType) {
+		this._loanType = _loanType;
+	}
+	
+	
+	
+	public int insertLoanIntoTable()
+	{
+		List l = new ArrayList<>();
+		
+
+		l.add(_userName);
+		l.add(_amt);
+		l.add(_loanType);
+	
+		
+		return DbFunction.insertEntry(DbFunction.TBs.tb_loans,l);
+		
+	}
+	
+	int insertEntry(List l) {
+		return DbFunction.insertEntry(_tb, l);
+
+	}
+	
+	
+}

@@ -1,0 +1,13 @@
+package org.dxc.factorydesign;
+
+
+import org.dxc.Bean.Student;
+
+
+public class ServiceFactory {
+	private static final IStudentService service;
+	static
+	{
+		service = new s
+	}
+}

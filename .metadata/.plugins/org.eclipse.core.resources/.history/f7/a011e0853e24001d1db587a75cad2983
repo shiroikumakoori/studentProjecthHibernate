@@ -1,0 +1,77 @@
+package carServiceSystem;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import com.mysql.cj.jdbc.MysqlDataSource;
+
+public abstract class PersonModel {
+	
+	PreparedStatement pstmt= null;
+	Connection con = null ;
+	ResultSet res = null;
+	
+	
+	static protected String _tb;
+	protected String _userName;
+	protected String _password;
+	
+	public	 String getUserName() {return _userName;}
+	public void   setUserName(String userName) { this._userName = userName;}
+	
+	
+	public String getPassword() {return _password;}
+	public void   setPassword(String ps) {this._password = ps;}
+	
+	
+	abstract public int insertEntry();
+
+	
+	public int isCredentialsCorrect()
+	{
+				
+		try {			
+		
+			var query = "select * from "+ _tb +
+					" where userName=?";
+			pstmt = con.prepareStatement(query);
+	
+			pstmt.setString(1, this.getUserName());
+			
+
+        	ResultSet  res = pstmt.executeQuery();
+        	if(res.next())
+        	{
+        		
+        		query = "select * from "+ _tb +
+    					" where userName=? AND password=?";
+    			pstmt = con.prepareStatement(query);
+    			pstmt.setString(1, this.getUserName());
+    			pstmt.setString(2, this.getPassword());
+            	res = pstmt.executeQuery();
+    			
+            	if(res.next())
+            	{
+            		System.out.println("correct");
+            		return 1 ;
+            	}
+            	else//password does not match 
+            	{
+            		return -1;
+            	}
+            	
+        	}
+        	else {
+        		System.out.println("nothing exist");
+        		return 0;
+        	}
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+			return 0;
+		}
+	
+	
+	}
+}

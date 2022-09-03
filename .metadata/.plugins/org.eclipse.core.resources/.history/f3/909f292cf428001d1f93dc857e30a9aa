@@ -1,0 +1,31 @@
+package org.dxc.Bean;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+
+public class Student {
+	@Id
+	private String sid;
+	@Column(name="sname")
+	private String sname;
+	public String getSid() {
+		return sid;
+	}
+	public void setSid(String sid) {
+		this.sid = sid;
+	}
+	public String getSname() {
+		return sname;
+	}
+	public void setSname(String sname) {
+		this.sname = sname;
+	}
+	public String getSaddr() {
+		return saddr;
+	}
+	public void setSaddr(String saddr) {
+		this.saddr = saddr;
+	}
+	@Column(name="saddr")
+	private String saddr;
+}

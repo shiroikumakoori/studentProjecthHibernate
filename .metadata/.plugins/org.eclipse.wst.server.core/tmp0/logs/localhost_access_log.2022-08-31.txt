@@ -1,0 +1,6 @@
+127.0.0.1 - - [31/Aug/2022:00:25:03 +0800] "GET / HTTP/1.1" 404 951
+0:0:0:0:0:0:0:1 - - [31/Aug/2022:00:25:03 +0800] "GET /carServiceSystem/index.html HTTP/1.1" 200 241
+0:0:0:0:0:0:0:1 - - [31/Aug/2022:00:25:06 +0800] "GET /carServiceSystem/customer.html HTTP/1.1" 200 405
+0:0:0:0:0:0:0:1 - - [31/Aug/2022:00:25:08 +0800] "GET /carServiceSystem/admin.html HTTP/1.1" 200 291
+0:0:0:0:0:0:0:1 - - [31/Aug/2022:00:25:13 +0800] "GET /carServiceSystem/AdminController?userName=admin&password=admin HTTP/1.1" 302 -
+0:0:0:0:0:0:0:1 - - [31/Aug/2022:00:25:14 +0800] "GET /carServiceSystem/adminSuccess.jsp HTTP/1.1" 200 460

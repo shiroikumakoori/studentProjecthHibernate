@@ -1,0 +1,5 @@
+package org.dxc.Bean;
+
+public class Student {
+
+}

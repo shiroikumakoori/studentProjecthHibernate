@@ -1,0 +1,40 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+
+      <%@page language="java" import="java.util.*" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<table>
+<%Iterator itr; %>
+<%List<CustomerModel>listCus =(List<CutomerModel>) session.getAttribute("listOfCus");
+for(itr = listCus.iterator(); itr.hasNext();)
+{%>
+<tr>
+<td><%=itr.next() %> </td>
+</td>
+<%}%>
+</table>
+
+
+	<p> there ${ listOfCus } </p>
+	
+	<table>
+
+    <c:forEach var="cus" items="${listOfCus}">
+        <tr>
+         <td>Employee blah: <c:out value="${cus._name}"/></td>
+            <td>Employee Name: <c:out value="${cus._name}"/></td>
+            <td>Employee service: <c:out value="${cus.get_car().get_serReq()}"/></td>  
+            <td>Employee status: <c:out value="${cus.get_car().is_status()}"/></td>  
+        </tr>
+    </c:forEach>
+</table>
+	
+</body>
+</html>

@@ -1,0 +1,12 @@
+package org.dxc.service;
+
+import org.dxc.Bean.Student;
+
+interface IStudentService {
+	Integer insert(Student s);
+	Student getAllStudent();
+	Student getById(int id);
+	void updateRecord(Student s);
+	void deleteRecord(int d); 
+
+}

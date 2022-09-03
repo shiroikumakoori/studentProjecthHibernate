@@ -1,0 +1,13 @@
+package org.dxc.Bean;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+
+public class Student {
+	@Id
+	private String sid;
+	@Column(name="sname")
+	private String sname;
+	@Column(name="saddr")
+	private String saddr;
+}

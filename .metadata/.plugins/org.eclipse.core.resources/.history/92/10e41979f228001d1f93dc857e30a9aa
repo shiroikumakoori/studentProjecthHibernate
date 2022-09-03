@@ -1,0 +1,57 @@
+package org.dxc.controller;
+
+import org.hibernate.cfg.Configuration;
+
+
+
+public class App {
+	enum Student_TestCase
+	{
+		insert_record,
+		get_record,
+		view_allRecord,
+		delete_record,
+		exit_app
+	}
+	static Scanner scan = System.in;
+	Student_TestCase c;
+	public void run()
+	{
+		switch (c) {
+		case delete_record:
+			break;
+		case exit_app:
+			break;
+		case get_record:
+			break;
+		case insert_record:
+			break;
+		case view_allRecord:
+			System.out.println("Student SID:");
+			sid=scan.next();
+			std=studentService.searchDetail(sid); 
+			BufferedReader b=new BufferedReader(new InputStreamReader(System.in));
+			System.out.print("Student Name[old name:"+std.getSname()+"]:");
+			sname=b.readLine(); 
+			if(sname==null ||sname=="") 
+			{ 
+				sname=std.getSname(); 
+			} 
+			System.out.print("Student Address[old address:"+std.getSaddr()+"]:");
+			saddr=b.readLine(); 
+			if(saddr==null||saddr=="") 
+			{
+					saddr=std.getSaddr();
+			}
+			std=new Student();
+			std.setSid(sid); 
+			std.setSname(sname); 
+			std.setSaddr(saddr); 
+			status=studentService.updateDetails(std);
+			break;
+		default:
+			break;
+
+		}
+	}
+}

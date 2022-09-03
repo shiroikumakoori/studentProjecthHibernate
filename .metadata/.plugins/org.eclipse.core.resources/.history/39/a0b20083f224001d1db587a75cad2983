@@ -1,0 +1,154 @@
+package carServiceSystem;
+
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.mysql.cj.jdbc.MysqlDataSource;
+
+public class CustomerModel extends PersonModel {
+	
+	private CarModel _car;
+	public CarModel get_car() {
+		return _car;
+	}
+	public void set_car(CarModel _car) {
+		this._car = _car;
+	}
+	private String _name;
+	private String _email;
+	//name, username,password,email
+	public String getEmail() {return this._email;}
+	public void setEmail(String email) { this._email =email;}
+	
+	public String getName() { return this._name;}
+	public void setName( String name) { this._name = name;}
+	
+	
+	
+	
+	
+	public CustomerModel() {
+		this._tb= "tb_CustomerCredentials";
+		try
+		{
+			MysqlDataSource myDS = new MysqlDataSource() ;
+			myDS.setUser("root");
+			myDS.setPassword("ME12345");
+			myDS.setServerName("test");
+			myDS.setDatabaseName("student");
+			myDS.setURL("jdbc:mysql://localhost:3306/sample_dxc");
+			con = myDS.getConnection();
+			System.out.println("connect to database");
+
+	        Statement stmt = con.createStatement();
+	  	      
+	          String sql = 
+	        		  "CREATE TABLE IF NOT EXISTS "+ this._tb +	                	
+	        		   "(email VARCHAR(255), " +
+	        		   "name VARCHAR(255), "+
+        			   "userName VARCHAR(255), " +
+	                   "password VARCHAR(255), " + 		                
+	                   "PRIMARY KEY ( email ))"; 
+
+	        stmt.executeUpdate(sql);
+  
+		    
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      } 
+
+	
+	}
+	public List<CustomerModel> getAllcus()
+	{
+		var query = "select userName from "+ _tb;
+		var query2 = "select userName from "+ _tb;
+		try
+		{
+			pstmt = con.prepareStatement(query);
+
+        	ResultSet  res = pstmt.executeQuery();
+        	List<CustomerModel> lM = new ArrayList<>();
+        	
+        	while(res.next())
+        	{	
+        		CustomerModel cus = new CustomerModel();
+        		CarModel car = new CarModel();
+        		
+        		cus.setName(res.getString(1));
+        		car.set_cusUserName(res.getString(1));
+        		car.FindCar();
+        		cus.set_car(car);
+        		lM.add(cus);
+        	}
+        	return lM;
+		}
+		catch (Exception e) {
+			System.out.println( e.getMessage());
+			// TODO: handle exception
+			return null;
+		}
+	}
+	public List<CustomerModel> getAllcusPendingRequest()
+	{
+		var query = "select userName from "+ _tb;
+		var query2 = "select userName from "+ _tb;
+		try
+		{
+			pstmt = con.prepareStatement(query);
+
+        	ResultSet  res = pstmt.executeQuery();
+        	List<CustomerModel> lM = new ArrayList<>();
+        	
+        	while(res.next())
+        	{	
+        		CustomerModel cus = new CustomerModel();
+        		CarModel car = new CarModel();
+        		
+        		cus.setName(res.getString(1));
+        		car.set_cusUserName(res.getString(1));
+        		car.FindCar();
+        		if(car.get_serReq() != null && !car.get_serReq().equals("false")&& !car.is_status())
+        		{
+        			cus.set_car(car);
+        			lM.add(cus);
+        		}
+        	}
+        	return lM;
+		}
+		catch (Exception e) {
+			System.out.println( e.getMessage());
+			// TODO: handle exception
+			return null;
+		}
+	}
+	@Override
+	public int insertEntry() {
+		var query = "insert into "+ _tb+" values(?, ?, ?, ?)";
+		try
+		{
+			pstmt = con.prepareStatement(query);
+	
+		
+			pstmt.setString(1,_email);
+			pstmt.setString(2, _name);
+			pstmt.setString(3,_userName);
+			pstmt.setString(4,_password);
+			
+			int row = pstmt.executeUpdate();
+			return row;
+
+		}
+		catch (Exception e) {
+			System.out.println( e.getMessage());
+			// TODO: handle exception
+			return 0;
+		}
+	}
+	public void Init()
+	{
+		
+	}
+}

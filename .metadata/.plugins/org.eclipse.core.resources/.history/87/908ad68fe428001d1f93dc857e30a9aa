@@ -1,0 +1,62 @@
+package org.dxc.service;
+
+import org.dxc.Bean.Student;
+import org.dxc.entity.Employee;
+import org.dxc.factorydesign.HibernateFactory;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+
+public class StudentServiceImplementation implements IStudentService {
+
+	@Override
+	public Integer insert(Student s) {
+	
+		SessionFactory factory = HibernateFactory.getFactoryObject();
+		Session session = factory.openSession();
+		Transaction  tx =session.beginTransaction();
+		int id = (Integer) session.save(s);
+		tx.commit();
+		return id;
+	}
+
+	@Override
+	public Student getAllStudent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Student getById(int id) {
+
+
+		
+		SessionFactory factory = HibernateFactory.getFactoryObject();
+		Session session = factory.openSession();
+		Transaction  tx = null; 
+		try {
+			tx = session.beginTransaction();
+			Student empolyee = (Student) session.get(Student.class, id);
+			System.out.println( "first name"+ empolyee.getFirstName());
+			System.out.println( "last name" + empolyee.getLastName());
+			System.out.println( "salary" +  empolyee.getSalary());
+					tx.commit();
+		
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	@Override
+	public void updateRecord(Student s) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteRecord(int d) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

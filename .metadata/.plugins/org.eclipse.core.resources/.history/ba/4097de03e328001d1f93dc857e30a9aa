@@ -1,0 +1,15 @@
+package org.dxc.factorydesign;
+
+import org.dxc.service.*;
+
+
+public class ServiceFactory {
+	private static final IStudentService service;
+	public static IStudentService getService() {
+		return service;
+	}
+	static
+	{
+		service = new StudentServiceImplementation();
+	}
+}

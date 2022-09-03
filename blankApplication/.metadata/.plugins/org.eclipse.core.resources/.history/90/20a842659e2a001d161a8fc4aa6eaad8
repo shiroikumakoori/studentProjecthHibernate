@@ -1,0 +1,70 @@
+package org.bankModels;
+
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class PersonlModel {
+
+	DbFunction.TBs _tb ; 
+
+	
+	
+	LoginDetails _loginDetails;
+	
+	public LoginDetails get_loginDetails() {
+		return _loginDetails;
+	}
+	public void set_loginDetails(LoginDetails _loginDetails) {
+		this._loginDetails = _loginDetails;
+	}
+	PersonlModel (String userName, String password)
+	{
+		_loginDetails = new LoginDetails(userName, password);
+		
+	}
+	protected void set_Table( DbFunction.TBs tb )
+	{
+		this._tb = tb; 
+	}
+	protected DbFunction.TBs get_Table() { return _tb;}
+	
+	public int insertEntry(List l) {
+		return DbFunction.insertEntry(_tb, l);
+
+	}
+	public void UpdateEntry(DbFunction.TBs tbs, List l  ,String q)
+	{
+		DbFunction.updateEntry( tbs, l, q);
+
+	}
+	
+	public int isDetailsCorrect()
+	{
+		try
+		{			
+			String q = "where userName=? and password=?";
+			List l = new ArrayList<>();
+			l.add(_loginDetails.get_userName());
+			l.add(_loginDetails.get_password());
+			ResultSet res = DbFunction.getEntry(_tb,l , q);
+			
+			if(res.next())
+			{
+				return 1;
+			}
+			else
+			{
+				return 0; 
+			}
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+			return 0; 
+		}
+	}
+	
+	
+}

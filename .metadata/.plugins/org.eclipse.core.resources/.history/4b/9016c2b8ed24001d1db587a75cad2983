@@ -1,0 +1,187 @@
+package carServiceSystem;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+import com.mysql.cj.jdbc.MysqlDataSource;
+
+public class CarModel {
+	
+	PreparedStatement pstmt= null;
+	Connection con = null ;
+	ResultSet res = null;
+	protected String _tb;
+	
+	
+	
+	protected String _cusUserName;
+	protected String _model;
+	protected String _fuelType;
+	protected String _regNum;
+	protected String _serReq;
+	protected boolean _status;
+	
+	public String get_cusUserName() {
+		return _cusUserName;
+	}
+	public void set_cusUserName(String _cusUserName) {
+		this._cusUserName = _cusUserName;
+	}
+	public String get_model() {
+		return _model;
+	}
+	public void set_model(String _model) {
+		this._model = _model;
+	}
+	public String get_fuelType() {
+		return _fuelType;
+	}
+	public void set_fuelType(String _fuelType) {
+		this._fuelType = _fuelType;
+	}
+	public String get_regNum() {
+		return _regNum;
+	}
+	public void set_regNum(String _regNum) {
+		this._regNum = _regNum;
+	}
+	public String get_serReq() {
+		return _serReq;
+	}
+	public void set_serReq(String _serReq) {
+		this._serReq = _serReq;
+	}
+	public boolean is_status() {
+		return _status;
+	}
+	public void set_status(boolean _status) {
+		this._status = _status;
+	}
+	public CarModel() {
+		this._tb= "tb_CarDetails_1";
+		try
+		{
+			MysqlDataSource myDS = new MysqlDataSource() ;
+			myDS.setUser("root");
+			myDS.setPassword("ME12345");
+			myDS.setServerName("test");
+			myDS.setDatabaseName("student");
+			myDS.setURL("jdbc:mysql://localhost:3306/sample_dxc");
+			con = myDS.getConnection();
+			System.out.println("connect to database");
+
+	        Statement stmt = con.createStatement();
+	  	      
+	          String sql = 
+	        		  "CREATE TABLE IF NOT EXISTS "+ this._tb +
+//	                   "(id INTEGER not NULL, " +
+	        		   "(" +
+	        		   "cusUserName VARCHAR(255), "+
+        			   "carModel VARCHAR(255), " +
+	                   "carFuelType VARCHAR(255), " +
+        			   "carRegNum VARCHAR(255), "+
+	                   "serviceReq VARCHAR(255), "+
+        			   "status TINYINT(1), "+
+	                   "PRIMARY KEY ( cusUserName )"
+	                   + ")";
+
+	        stmt.executeUpdate(sql);
+
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      } 
+	}
+	public int insertEntry()
+	{
+		var query = "insert into "+ _tb+" values(?, ?, ?, ?, ?, ?)";
+		try
+		{
+			pstmt = con.prepareStatement(query);
+	
+			pstmt.setString(1, _cusUserName);
+			pstmt.setString(2, _model);
+			pstmt.setString(3, _fuelType);
+			pstmt.setString(4, _regNum);
+			pstmt.setString(5, _serReq);
+			pstmt.setBoolean(6, _status);
+			
+			
+			int row = pstmt.executeUpdate();
+			return row;
+
+		}
+		catch (Exception e) {
+			System.out.println( e.getMessage());
+			// TODO: handle exception
+			return 0;
+		}
+	}
+	public void UpdateEntry()
+	{
+		var query = "update set serviceReq=?, status=?  from "+ _tb+" where cusUserName=?";
+		try
+		{
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setString(3, _cusUserName);
+			pstmt.setString(1, _serReq);
+			pstmt.setBoolean(2, _status);
+        	ResultSet  res = pstmt.executeQuery();
+        	if(res.next())
+        	{
+//        		_cusUserName = res.getString(1);
+//				_model= res.getString(2);
+//				_fuelType= res.getString(3);
+//				_regNum = res.getString(4);
+//				_serReq= res.getString(1);
+				_status = res.getBoolean(2);       		
+        	}
+        	else {
+        		System.out.println("no car yet");
+        	}
+
+		}
+		catch (Exception e) {
+			System.out.println( e.getMessage());
+			// TODO: handle exception
+			
+		}
+	
+
+	}
+	public void FindCar()
+	{
+		var query = "select * from "+ _tb+" where cusUserName=?";
+		try
+		{
+			pstmt = con.prepareStatement(query);
+	
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, _cusUserName);
+        	ResultSet  res = pstmt.executeQuery();
+        	if(res.next())
+        	{
+        		_cusUserName = res.getString(1);
+				_model= res.getString(2);
+				_fuelType= res.getString(3);
+				_regNum = res.getString(4);
+				_serReq= res.getString(5);
+				_status = res.getBoolean(6);
+        		System.out.println("has a car");
+        		
+        	}
+        	else {
+        		System.out.println("no car yet");
+        	}
+
+		}
+		catch (Exception e) {
+			System.out.println( e.getMessage());
+			// TODO: handle exception
+			
+		}
+	}
+	
+}

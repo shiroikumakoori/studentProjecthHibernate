@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<form action="/MvcModel/ViewStudent">
+
+<table>
+	<tr> <td>	<label>id</label>     <input name="id2" type=text></input></td> </tr>
+	<tr> <td><input type="submit" value="Find Student"><input></td></tr>
+
+	<tr> <td> <input name="resId"></input> </td></tr>
+	<tr> <td> <input name="resName"></input> </td></tr>
+	<tr> <td> <input name="resMarks1"></input> </td></tr>
+	<tr> <td> <input name="resMarks2"></input> </td></tr>
+	<tr> <td> <input name="resMarks3"></input> </td></tr>
+</table>
+</form>
+<br>
+ <form action="/MvcModel/InsertResultController">
+	<table>
+
+	<tr> <td>	<label>id</label>     <input name="id" type=text></input></td> </tr>
+	<tr><td>	<label>name</label>   <input name="name" type=text></input></td></tr>
+	<tr> <td>	<label>marks1</label> <input name="marks1" type=text></input></td></tr>
+	<tr><td>	<label>marks2</label> <input name="marks2" type=text></input></td></tr>
+	<tr><td>	<label>marks3</label> <input name="marks3" type=text></input></td></tr>
+	
+	<tr> <td><input type="submit" value="Add Result"><input></td></tr>
+	</table>
+	
+	<p id="result"> testing</p>
+</form>
+	
+	
+</body>
+</html>

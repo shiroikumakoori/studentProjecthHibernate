@@ -1,0 +1,29 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+                       <%@page language="java" import="java.util.*" %>
+       <%@page language="java" import="org.bankModels.*" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+
+
+
+
+<form action="/bankApplication/UpdateSelectedLoanController" >
+		  <label>type selected loan 's index to change</label>
+		  <input type="text"  name="selectedPersonIndex">
+		  <label>comments</label>
+		  <input type="text" name="selectedComment" >
+		  
+		  <input type="radio" id="html" name="Choice" value="Approve">
+		  <label for="Approve">HTML</label><br>
+		  <input type="radio" id="css" name="Choice" value="Reject">
+		  <label for="Reject">CSS</label><br>
+</form>	
+</body>
+</html>

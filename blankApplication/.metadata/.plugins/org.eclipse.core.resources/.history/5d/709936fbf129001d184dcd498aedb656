@@ -1,0 +1,43 @@
+package org.controllers;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class ApplyLoanController
+ */
+public class ApplyLoanController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+
+		HttpSession session = request.getSession(true);
+
+		int amt  = Integer.parseInt(request.getParameter("amount"));
+		String loanType  = request.getParameter("selectedLoan");
+
+//		AdminModel m  =(AdminModel) session.getAttribute("adminModelObject");
+		
+		CustomerLoginModel m= ( CustomerLoginModel)(session.getAttribute("currCusModel"));
+		String userName =m.get_loginDetails().get_userName();
+		
+		LoanModel l = new LoanModel();
+		l.set_userName(userName);
+		l.set_loanType(loanType);
+		l.set_amt(amt);
+		l.insertLoanIntoTable();
+
+		
+		
+
+		session.setAttribute("displayMsg","loan applied");
+		response.sendRedirect("/Simple/applyLoan.jsp");
+
+	}
+
+}

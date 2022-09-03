@@ -1,0 +1,12 @@
+package org.bank;
+
+public class AdminModel extends PersonlModel {
+
+	AdminModel() {
+		super("", "");
+		set_Table( DbFunction.TBs.tb_admindetails);
+		// TODO Auto-generated constructor stub
+	}
+	
+
+}

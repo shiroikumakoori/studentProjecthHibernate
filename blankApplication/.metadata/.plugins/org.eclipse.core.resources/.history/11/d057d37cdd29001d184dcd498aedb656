@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div style="display :flex;">
+	<a href="admin.html">admin</a>
+	<br>
+	<a href="/Simple/work">customeraoeaoeo</a>
+	<a href="customer.html">customer</a>
+
+</div>
+</body>
+</html>

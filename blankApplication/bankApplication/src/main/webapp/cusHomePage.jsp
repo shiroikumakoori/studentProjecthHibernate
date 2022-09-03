@@ -1,0 +1,23 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div style="display :flex; flex-direction: column;">
+		<p>hello  ${userName} </p>
+		<a href="/bankApplication/changePassword.html" > change password</a>
+		<a href="/bankApplication/CheckBalanceController" > check balance</a>
+		<a href="/bankApplication/TransferMoney.jsp" > send money</a>
+		<a href="/bankApplication/applyLoan.jsp" > apply loan</a>
+		<a href="/bankApplication/viewTransaction.jsp" > check transaction </a>
+		<a href="/bankApplication/withdraw.html" > withdraw</a>
+		<a href="/bankApplication/deposit.jsp" > deposit</a>
+		<a href="/bankApplication/abc">test</a>
+
+</div>
+</body>
+</html>

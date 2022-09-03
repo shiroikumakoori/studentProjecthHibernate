@@ -1,0 +1,53 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+                       <%@page language="java" import="java.util.*" %>
+       <%@page language="java" import="org.bankModels.*" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+
+<table>
+<input name="selectedName1" value="1">
+<%Iterator itr; 
+
+	String name ="";
+	String userName="";
+	int amt = 0;
+%>
+<%List<LoanModel> listCus =(List<LoanModel>) session.getAttribute("listOfCus");
+for(itr = listCus.iterator(); itr.hasNext();)
+{
+	LoanModel cus = ((LoanModel)itr.next());
+
+%>
+	
+
+
+<tr>
+
+<td><input name="selectedName" value="<%=cus.get_userName()%>"> </td>
+
+<td><%=cus.get_amt() %> </td>
+<td><%=cus.get_loanType() %> </td>
+<td>
+<form action="/bankApplication/UpdateSelectedLoanController" >
+	 <input type="submit"> Approve 
+</form>
+</td>
+
+<td>
+<form action="/bankApplication/AdminLoginController" >
+	 <input type="submit"> reject 
+</form>
+</td>
+</tr>
+<%}%>
+</table>
+
+</body>
+</html>

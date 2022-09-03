@@ -1,0 +1,11 @@
+package org.dxc.factorydesign;
+
+
+
+public class ServiceFactory {
+	private static final IStudentService service;
+	static
+	{
+		service = new s
+	}
+}
