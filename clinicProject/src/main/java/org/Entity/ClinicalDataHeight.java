@@ -8,23 +8,23 @@ public class ClinicalDataHeight {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
 	
-	@Column(nullable = false)
+//	@Column(nullable = false)
 	String componetName;
-	@Column(nullable = false)
+//	@Column(nullable = false)
 	String componetValue;
-	@Column(nullable = false)
+//	@Column(nullable = false)
 	String measuredDateTime;
 	
-	@OneToOne(targetEntity = PatientData.class)
-	PatientData patientId;
+//	@OneToOne(targetEntity = PatientData.class)
+//	PatientData patientId;
 
-	public PatientData getPatientId() {
-		return patientId;
-	}
-
-	public void setPatientId(PatientData patientId) {
-		this.patientId = patientId;
-	}
+//	public PatientData getPatientId() {
+//		return patientId;
+//	}
+//
+//	public void setPatientId(PatientData patientId) {
+//		this.patientId = patientId;
+//	}
 
 	public int getId() {
 		return id;

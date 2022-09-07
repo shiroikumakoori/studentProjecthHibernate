@@ -1,6 +1,8 @@
 package org.Entity;
 
 
+import java.util.List;
+
 import javax.persistence.*;
 
 
@@ -9,23 +11,29 @@ public class PatientData {
 	@Id
 	@Column(unique = true, nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@PrimaryKeyJoinColumn
 	int Id;
 	String firstName;
 	String lastName;
 	int age;
+
 	
-	@OneToOne(targetEntity = ClinicalDataHeight.class , cascade = CascadeType.ALL)
-	ClinicalDataHeight clinicObj;
+	@OneToMany(cascade=CascadeType.ALL)
+	@JoinColumn(name="qid")
+	@OrderColumn(name="type")
+	List< ClinicalDataHeight> clinicObj;
+	
+	
+	public List<ClinicalDataHeight> getClinicObj() {
+		return clinicObj;
+	}
+	public void setClinicObj(List<ClinicalDataHeight> clinicObj) {
+		this.clinicObj = clinicObj;
+	}
+
 	
 	
 
-	public ClinicalDataHeight getClinicObj() {
-		return clinicObj;
-	}
-	public void setClinicObj(ClinicalDataHeight clinicObj) {
-		this.clinicObj = clinicObj;
-	}
+
 	public int getId() {
 		return Id;
 	}
