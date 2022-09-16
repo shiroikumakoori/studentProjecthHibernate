@@ -1,1 +1,1 @@
-[projectabstract](https://github.com/shiroikumakoori/studentProjecthHibernate/blob/main/socialMedia/Docs/projectAbstract.md)
+[projectabstract](https://github.com/shiroikumakoori/studentProjecthHibernate/blob/main/GamMedia/Docs/projectAbstract.md)
