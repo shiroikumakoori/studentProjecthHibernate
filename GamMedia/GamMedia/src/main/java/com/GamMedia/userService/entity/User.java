@@ -1,8 +1,15 @@
 package com.GamMedia.userService.entity;
 
 import java.util.Collection;
+import java.util.Set;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.GamMedia.postService.entity.Post;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.*;
 
@@ -32,8 +39,10 @@ public class User {
 		            name = "user_id", referencedColumnName = "id"),
 			inverseJoinColumns = @JoinColumn(
 				            name = "role_id", referencedColumnName = "id"))
-	private Collection<Role> roles;
+
+	private Set<Role> roles;
 	
 	
+
 
 }

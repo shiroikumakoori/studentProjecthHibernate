@@ -1,16 +1,20 @@
 package com.GamMedia.userService.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.GamMedia.userService.entity.User;
 import com.GamMedia.userService.service.IUserService;
 
 
-@RestControllerAdvice
+@RestController
 @RequestMapping("userService")
 public class UserController {
-	
+
 	@Autowired
 	private IUserService userService;
 	
