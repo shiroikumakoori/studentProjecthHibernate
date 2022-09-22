@@ -1,0 +1,34 @@
+<h1>post-feed  Start</h1>
+<button (click)="getPostFeed()">get postFeed</button>
+
+
+<div>
+    <input #postTitle type="text">
+    <textarea #postMess type="text"></textarea>
+    <button (click)="createPost(postTitle,postMess)">Post !</button>
+</div> 
+<div *ngIf="isEditing" class="c_editBody" >
+  <h3>editing your post</h3>
+  <input #postTitle type="text" [(ngModel)]="editingPost.title">
+  <textarea #postMess type="text" [(ngModel)]="editingPost.message"></textarea>
+  <button (click)="onEditPostDone()">done editing !</button>
+</div>
+  
+<div *ngIf="!isEditing" >
+  <div *ngFor="let post of ListOfPost">
+    <div class="singlePost">
+      
+      <label>
+        {{post.id}}{{post.title}}
+      </label>
+      <div *ngIf="postBelongToUser(post)">
+        <button (click)="onEditPostStart(post)">edit</button>
+        <button (click)="deletePostById(post.id)">X</button>
+      </div>
+      <p>{{post.lastName}}</p>
+      <p>{{post.firstName}}</p>
+      <p>{{post.message}}</p>
+    </div>
+    
+  </div>
+</div>
