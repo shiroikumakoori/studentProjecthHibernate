@@ -1,6 +1,7 @@
 package com.GamMedia.fileservice.service;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class DatabaseFileServiceImpl implements IDatabaseFileService {
 		    return dbFileRespository.save(file);		
 	}
 	
-	public DatabaseFile getFile(String fileId) {
+	public DatabaseFile getFile(Long fileId) {
 		return dbFileRespository.findById(fileId)
 				.orElseThrow(
 						()->new FileNotFoundException(
@@ -47,6 +48,12 @@ public class DatabaseFileServiceImpl implements IDatabaseFileService {
 		}catch(IOException e) {
 			throw new FileStorageException("Could not Store File"+fileName+"please try again",e);
 		}
+	}
+
+	@Override
+	public Collection<DatabaseFile> getFilesByPostId(Long postId) {
+		// TODO Auto-generated method stub
+		return dbFileRespository.getFilesByPostId(postId);
 	}
 
 

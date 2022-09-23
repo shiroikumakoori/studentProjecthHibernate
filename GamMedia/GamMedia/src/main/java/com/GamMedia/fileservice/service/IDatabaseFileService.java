@@ -1,6 +1,7 @@
 package com.GamMedia.fileservice.service;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,5 +23,6 @@ public interface IDatabaseFileService {
 	public DatabaseFile storeFile(MultipartFile file) ;
 	public DatabaseFile storeFile(DatabaseFile file);
 	
-	public DatabaseFile getFile(String fileId); 
+	public DatabaseFile getFile(Long fileId); 
+	public Collection<DatabaseFile> getFilesByPostId(Long postId);
 }

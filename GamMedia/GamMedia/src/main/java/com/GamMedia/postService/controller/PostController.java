@@ -1,13 +1,16 @@
 package com.GamMedia.postService.controller;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -16,6 +19,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +27,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -42,9 +47,9 @@ import com.GamMedia.postService.service.IPostService;
 import com.GamMedia.userService.entity.User;
 import com.GamMedia.userService.service.IUserService;
 
-
+@CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("postService")
+@RequestMapping("postService" )
 public class PostController {
 
 	String[] attributeNames={ "Curr_LoginUser"};
@@ -67,28 +72,23 @@ public class PostController {
 
 	
     @PostMapping("/create")
-    public String saveUser(@RequestBody PostDTO postDTO, HttpSession session) {
+    public Long saveUser(@RequestBody PostDTO postDTO) {
     	
     	l.logToStream(this.getClass().getName() ,"saveUser()");
     	try {
-	    	Object obj =session.getAttribute(getUserAttName());
-			if(obj!= null)
-			{			
-				UserSessionDTO uDTO = (UserSessionDTO) obj;
+//	    
 				Post post = this.mMapper.map(postDTO, Post.class);
-		
-		        post.setUser( userService.getUserById(uDTO.getId()));
-		        postService.createPost(post);
+				post.setId(null);
+		        post.setUser( userService.getUserById(postDTO.getUserId()));
+		        Post newPost = postService.createPost(post);
 		        l.logToStream(this.getClass().getName(), "saveUser(): postcreated");
-
-			}
-			else {
-				l.logToStream(this.getClass().getName(), "saveUser(): user not login");
-			}
+		        
+		        return newPost.getId() ;
+			
     	} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-        return "redirect:userService/login/HomePage/";
+    	  return null;
     }
 
     @GetMapping("/{id}")
@@ -112,9 +112,29 @@ public class PostController {
     	l.logToStream(this.getClass().getName(), "deletePost(): deleting "+ id);
         postService.deletePost(id);
     }
-    
-    @PutMapping("/edit/{id}")
-    public void updatePost(@RequestBody PostDTO postDTO, HttpSession session,
+    @PutMapping("/update")
+    public void updatePost(@RequestBody PostDTO postDTO)
+    {
+    	System.out.println("Inside saveUser of UserController");
+
+		if(postDTO.getUserId() != null)
+		{
+			System.out.println("user has login");
+	
+			Post post = this.mMapper.map(postDTO, Post.class);
+			//post.setId(postDTO.getUserId());
+	        //post.setUser( userService.getUserById(uDTO.getUserId()));
+			l.logToStream(this.getClass().getName() ,"updatePost(): " + post.getId());
+	        postService.updatePost(post);
+	       // postService.createPost(post);
+		}
+		else
+		{
+			l.logToStream(this.getClass().getName() ,"updatePost(): " +" doesn't exist");
+		}
+    }
+    @PutMapping("/update/{id}")
+    public void updatePostById(@RequestBody PostDTO postDTO, HttpSession session,
     		@PathVariable("id") Long id)
     {
     	System.out.println("Inside saveUser of UserController");
@@ -149,6 +169,18 @@ public class PostController {
     		
     		dto.setFirstName(userDto.getFirstName());
     		dto.setLastName(userDto.getLastName());
+    		//dto.setResource(new ArrayList());
+    		System.out.println("post id:"+ post.getId());
+    		for ( DatabaseFile file : fileService.getFilesByPostId(post.getId())) {
+    			//dto.setResource(loadMedia(file));
+    			///dto.setImageUrl("localhost:8080/postService/downloadFile/62059d23-bba5-4243-be16-d23e4b73c0a4");
+    			//dto.getResource().add( loadMedia(file));
+    			System.out.println("file id:"+ file.getId());
+    			dto.setFileId(file.getId());
+    			dto.setFileByte(file.getData());
+    			//dto.setFileByte(new ByteArrayResource(file.getData()));
+			} 
+    		//downloadFile()
     		//TODO doesnt seem to work well with mulit files =.=
 //    		Collection< ResponseEntity<Resource>> files= new ArrayList();
 //    		for (DatabaseFile file : post.getFiles()) {
@@ -178,10 +210,10 @@ public class PostController {
 	
 	
 		Post post = postService.getbyId(id);
-
+		
 		DatabaseFile fileName= conFileToDbFile(file);
-		post.getFiles().add(fileName);
-		//fileName.setPost(post );
+		//post.getFiles().add(fileName);
+		fileName.setPost(post );
 		
 		//System.out.println(fileName.getPost().getId());
 		fileName=		fileService.storeFile(fileName);
@@ -193,11 +225,24 @@ public class PostController {
 		return new Response(fileName.getFileName(), fileDownloadUri,file.getContentType(),file.getSize());
 	}
 	
+	
+//	@GetMapping("/downloadFile/{id}")
+//	public ResponseEntity<Resource> downloadFile(@PathVariable("id") Long id)
+//	{
+//		return loadMedia(id);
+//	}
+	
 	@GetMapping("/downloadFile/{id}")
-	public ResponseEntity<Resource> downloadFile(@PathVariable("id") String id)
+	public byte[] downloadFile(@PathVariable("id") Long id)
 	{
-		return loadMedia(id);
+		return fileService.getFile(id).getData();
 	}
+//	@GetMapping("/downloadFile/{id}")
+//	public String downloadFile(@PathVariable("id") String id)
+//	{
+//		System.out.println("download");
+//		return "okay";
+//	}
 	private DatabaseFile conFileToDbFile(MultipartFile file)
 	{
 		String fileName=StringUtils.cleanPath(file.getOriginalFilename());
@@ -214,7 +259,9 @@ public class PostController {
 			throw new FileStorageException("Could not Store File"+fileName+"please try again",e);
 		}
 	}
-	private ResponseEntity<Resource> loadMedia(String fileId)
+	
+	
+	private ResponseEntity<Resource> loadMedia(Long fileId)
 	{
 		DatabaseFile file = fileService.getFile(fileId);
 		
@@ -223,6 +270,22 @@ public class PostController {
 		.header(HttpHeaders.CONTENT_DISPOSITION,"attachment:filename=\""+file.getFileName()+"\"")
         .body(new ByteArrayResource(file.getData()));
 	
+	}
+	private ResponseEntity<Resource> loadMedia(DatabaseFile file)
+	{
+		
+		return ResponseEntity.ok()
+		.contentType(MediaType.parseMediaType(file.getFileType()))
+		.header(HttpHeaders.CONTENT_DISPOSITION,"attachment:filename=\""+file.getFileName()+"\"")
+        .body(new ByteArrayResource(file.getData()));
+	
+	}
+
+	private void test()
+	{
+//	    InputStream in = getClass()
+//	    	      .getResourceAsStream("/com/baeldung/produceimage/image.jpg");
+//	    IOUtils.toByteArray(in);
 	}
 	
 	

@@ -2,6 +2,7 @@ package com.GamMedia.payload;
 
 import java.util.Collection;
 
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 
@@ -14,13 +15,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostFeedDTO {
 
-	private Long userId;
-	
+	private Long id;
 	private String lastName;
 	private String firstName;
 	
 	private String title;
 	private String message; 
-	private Collection< ResponseEntity<Resource>> resource;
+	//private  ResponseEntity<Resource> resource;
+	private Long fileId;
+	private byte[] fileByte;
+	private Long userId;
 	
 }

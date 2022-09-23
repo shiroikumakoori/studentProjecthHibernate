@@ -1,29 +1,65 @@
 package com.GamMedia.userService.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import com.GamMedia.payload.UserSessionDTO;
 import com.GamMedia.userService.entity.User;
 import com.GamMedia.userService.service.IUserService;
 
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("userService")
 public class UserController {
 
 	@Autowired
 	private IUserService userService;
-	
+	@Autowired
+	private ModelMapper  mMapper; 
 
     @PostMapping("/create")
     public User saveUser(@RequestBody User user) {
         //log.info("Inside saveUser of UserController");
         System.out.println("Inside saveUser of UserController");
         return userService.createUserAccount(user);
+    }
+    @DeleteMapping("/delete/{id}")
+    public void deleteUser(@PathVariable("id") Long id) {
+        //log.info("Inside saveUser of UserController");
+        System.out.println("Inside saveUser of UserController");
+         userService.deletePost(id);
+    }
+    @PostMapping("/update/{id}")
+    public User updateUser(@PathVariable("id") Long id) {
+        //log.info("Inside saveUser of UserController");
+        System.out.println("Inside saveUser of UserController");
+        return userService.updateUserAccount( userService.getUserById(id));
+    }
+    @GetMapping("/all")
+    public List<UserSessionDTO> getAllUser() {
+        //log.info("Inside saveUser of UserController");
+        System.out.println("get all user");
+        List<UserSessionDTO> l = new ArrayList();
+        
+       for (User u: userService.getAll()) {
+    	   
+    	   UserSessionDTO dto = new UserSessionDTO();
+    	   dto.setFirstName(u.getFirstName());
+    	   dto.setLastName(u.getLastName());
+    	   dto.setId(u.getId());
+    	   l.add(dto);
+       } 
+        
+        return l;
     }
 
     @GetMapping("/{id}")

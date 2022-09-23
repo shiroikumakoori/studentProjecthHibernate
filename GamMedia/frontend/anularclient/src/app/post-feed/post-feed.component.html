@@ -1,12 +1,22 @@
-<h1>post-feed  Start</h1>
-<button (click)="getPostFeed()">get postFeed</button>
-
 
 <div>
+    <p>Post something !</p>
     <input #postTitle type="text">
     <textarea #postMess type="text"></textarea>
+    <div id="post-preview">
+      <img id="post-preview-image">
+    </div>
+    <mat-card-actions algin="end">
+      <button mat-button color="warn">
+          <label>
+              <input #photoSelector (change)="onPhotoSelected(photoSelector)" id="photo-upload" type="file" accept="image">
+              <mat-icon>insert_photo</mat-icon>
+          </label>
+      </button>
+  </mat-card-actions>
     <button (click)="createPost(postTitle,postMess)">Post !</button>
 </div> 
+
 <div *ngIf="isEditing" class="c_editBody" >
   <h3>editing your post</h3>
   <input #postTitle type="text" [(ngModel)]="editingPost.title">
@@ -19,7 +29,7 @@
     <div class="singlePost">
       
       <label>
-        {{post.id}}{{post.title}}
+        {{post.title}}
       </label>
       <div *ngIf="postBelongToUser(post)">
         <button (click)="onEditPostStart(post)">edit</button>
@@ -28,6 +38,12 @@
       <p>{{post.lastName}}</p>
       <p>{{post.firstName}}</p>
       <p>{{post.message}}</p>
+      <p>{{post.imageUrl}}</p>
+      <!-- <img src="{{post.imageUrl}}"> -->
+      <div *ngIf="post.fileByte">
+        <img  mat-card-image src="data:image/jpeg;base64,{{post?.fileByte}}" style="width: 400px"
+        alt="Not found" >
+      </div>
     </div>
     
   </div>

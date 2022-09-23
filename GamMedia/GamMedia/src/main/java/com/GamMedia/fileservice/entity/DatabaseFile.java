@@ -3,6 +3,7 @@ package com.GamMedia.fileservice.entity;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -28,9 +29,10 @@ import lombok.NoArgsConstructor;
 @Table(name="files")
 public class DatabaseFile {
 	@Id
-	@GeneratedValue(generator = "uuid")
-	@GenericGenerator(name="uuid", strategy = "uuid2")
-	private String id;
+//	@GeneratedValue(generator = "uuid")
+//	@GenericGenerator(name="uuid", strategy = "uuid2")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	
 	private String fileName;
 	private String fileType;
@@ -39,10 +41,10 @@ public class DatabaseFile {
 	private byte[] data;
 	
 	
-//	 @ManyToOne(fetch = FetchType.EAGER, optional = false )
-//	  @JoinColumn(name = "post_id", nullable = false)
-//	  @OnDelete(action = OnDeleteAction.CASCADE)
-//	  private Post post;
+	 @ManyToOne(fetch = FetchType.EAGER, optional = false )
+	  @JoinColumn(name = "postid", nullable = false)
+	  @OnDelete(action = OnDeleteAction.CASCADE)
+	  private Post post;
 
 
 	public DatabaseFile(String fileName, String fileType, byte[] data) {

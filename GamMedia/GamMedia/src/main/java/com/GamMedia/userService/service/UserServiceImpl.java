@@ -1,6 +1,7 @@
 package com.GamMedia.userService.service;
 
 import java.util.HashSet;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -89,7 +90,19 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public void deletePost(Long id) {
 		// TODO Auto-generated method stub
-		
+		userRepo.delete(userRepo.getReferenceById(id));
+	}
+
+	@Override
+	public User getUserByEmail(String email) {
+		// TODO Auto-generated method stub
+		return userRepo.getUserByEmail(email);
+	}
+
+	@Override
+	public List<User> getAll() {
+		// TODO Auto-generated method stub
+		return userRepo.findAll();
 	}
 
 }

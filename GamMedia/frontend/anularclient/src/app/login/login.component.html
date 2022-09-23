@@ -1,7 +1,39 @@
-<p>login works!</p>
 
-<div>
+
+<div *ngIf="isLogin()">
+    <h2>please login</h2>
     <input #userName type="text">
     <input #password type="password">
     <button (click)="onLogin(userName, password)">login </button>
 </div>
+
+
+<div *ngIf="isCreate()">
+    <h2>create account </h2>
+    <div style="display: flex; flex-direction: column; width: 500px ;" >
+
+        <input #userName type="text" placeholder="userName">
+        <input #password type="password" placeholder="password">
+        <input #passwordC type="password" placeholder="confrimPassword">
+        <br>
+        <input #email type="email" placeholder="123@gmail.com">
+        <input #lastName type="text" placeholder="last Name">
+        <input #firstName type="text" placeholder="first name ">
+    </div>
+
+    <button (click)="onCreateAcc(userName, password,passwordC,email,lastName,firstName)">create </button>
+</div>
+
+<div *ngIf="isForgetPassword()">
+    <h2>please type in your email , will reset your passowrd</h2>
+    <input #email type="email">
+
+    <button (click)="resetPassword(email)">send password to email </button>
+</div>
+
+<mat-card-actions algin="end">
+    <button (click)="onChangeToCreate()" mat-flat-button> create an account </button>
+    <button (click)="onChangeToLogin()"mat-flat-button> login</button>
+    <button (click)="onChangeToForgetPassword()" mat-flat-button> forget password</button>
+    
+</mat-card-actions>

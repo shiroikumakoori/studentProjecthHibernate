@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PrePostAnnotationSecurityMetadataSource;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +24,7 @@ import com.GamMedia.userService.entity.User;
 import com.GamMedia.userService.service.IUserService;
 
 
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("userService/login")
 public class UserLoginController {
@@ -35,9 +36,15 @@ public class UserLoginController {
 	@Autowired
 	private ModelMapper  mMapper; 
 	
-	
+//    @PostMapping("/create")
+//    public User saveUser(@RequestBody User user) {
+//        //log.info("Inside saveUser of UserController");
+//        System.out.println("Inside saveUser of UserController");
+//        return userService.createUserAccount(user);
+//    }
+
 	@PostMapping("/attempLogin")
-	public User loginIn(@RequestBody UserLoginInDTO user , HttpServletRequest request)
+	public UserSessionDTO loginIn(@RequestBody UserLoginInDTO user , HttpServletRequest request)
 	{	
 		User u = userService.getUserByUserNamePassword(user.getUserName(), user.getPassword());
 		//password passed , setting session 
@@ -55,6 +62,7 @@ public class UserLoginController {
 			request.getSession().setAttribute(getUserAttName(),uDTO);
 			System.out.println("Login in succesful : " );
 			//System.out.println(user.getUserName() );
+			return uDTO;
 		}
 		else
 		{

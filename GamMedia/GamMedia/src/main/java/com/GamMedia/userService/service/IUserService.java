@@ -1,5 +1,7 @@
 package com.GamMedia.userService.service;
 
+import java.util.List;
+
 import com.GamMedia.payload.UserSessionDTO;
 import com.GamMedia.userService.entity.User;
 
@@ -17,5 +19,9 @@ public interface IUserService {
 	
 	public User updateUserAccount(Long id);
 	void deletePost(Long userId, Long Postid);
+	
+	 User getUserByEmail(String email);
+	 
+	 public List<User> getAll();
 
 }

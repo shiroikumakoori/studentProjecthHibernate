@@ -30,11 +30,19 @@ export class PostService {
     "update/",
 
     save: this.apiUrl + 
-    "create"
+    "create",
+
+    getFile:this.apiUrl+
+    "downloadFile/",
+    
+    getPost:this.apiUrl,
   }
   
   constructor(private http:HttpClient) { }
-
+  getPost(id:String)
+  {
+    return this.http.get(this.httpLink.getPost+id);
+  }
   createPost(model :any){
     return this.http.post(this.httpLink.save, model);
   }
@@ -53,6 +61,11 @@ export class PostService {
   deletePostById(id:String)
   {
     return this.http.delete(this.httpLink.deletePostById+id);
+  }
+
+  getFileById( id:String )
+  {
+    return this.http.get(this.httpLink.getFile+id);
   }
 
   // getALlPostWithouIncludingtMedia(): Observable<any> {  

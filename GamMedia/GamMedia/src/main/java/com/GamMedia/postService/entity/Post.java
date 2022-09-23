@@ -46,8 +46,7 @@ public class Post {
 	  @OnDelete(action = OnDeleteAction.CASCADE)
 	  private User user;
 	  
-	  @OneToMany(fetch = FetchType.EAGER )
-	  @JoinColumn(name = "post_id", nullable = false)
+	  @OneToMany(fetch = FetchType.EAGER, mappedBy ="post" )
 	  @OnDelete(action = OnDeleteAction.CASCADE)
 	  Collection<DatabaseFile> files;
 

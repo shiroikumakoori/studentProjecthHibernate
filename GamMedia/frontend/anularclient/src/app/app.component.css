@@ -1,0 +1,25 @@
+#nav
+{
+    position: fixed;
+    top :0;
+    left :0;
+    width: 100%;
+    height :25px;
+    background-color: red;
+}
+
+#nav-content{
+    display : grid;
+    grid-template-columns:  1fr 1fr;
+}
+
+#nav-left ,nav-right{
+    display : flex ;
+    align-items: center;
+    height :100%;
+    padding :0 10px;
+}
+
+#nav-right{
+ justify-content: flex-end;
+}

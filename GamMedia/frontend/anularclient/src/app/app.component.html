@@ -8,6 +8,42 @@
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
 <p> hi there </p>
-<app-login></app-login>
-<app-post-feed></app-post-feed>
-<router-outlet></router-outlet>
+
+<div id="nav-bar"   >
+  <div *ngIf="!user">
+    <app-login></app-login>
+  </div>
+  <div id="nav">
+    <div id="nav-content">
+
+      <div id="nav-left">
+        <div *ngIf="user">
+          <p> Welcome, {{user!.firstName}} {{user!.lastName}}
+          <p></p>
+        </div>
+      </div>
+
+      <div id="nav-right" *ngIf="user">
+        <div *ngIf="user">
+          <button (click)="onLogOut()">Logout</button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+  <div>
+  </div>
+
+ 
+</div>
+
+<div *ngIf="!isAdmin && user">
+
+  <app-post-feed></app-post-feed>
+  <router-outlet></router-outlet>
+</div>
+<div *ngIf="isAdmin">
+
+  <app-admin></app-admin>
+</div>

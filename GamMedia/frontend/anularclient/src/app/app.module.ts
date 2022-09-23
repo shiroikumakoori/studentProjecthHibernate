@@ -8,11 +8,28 @@ import {DataTablesModule} from 'angular-datatables';
 import { PostFeedComponent } from './post-feed/post-feed.component';
 import { LoginComponent } from './login/login.component';  
 
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { environment } from 'src/environments/environment';
+
+import {MatButtonModule} from '@angular/material/button';
+
+import {MatCardModule} from '@angular/material/card';
+
+import {MatIconModule} from '@angular/material/icon';
+
+import {  MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { AdminComponent } from './admin/admin.component';
+
+
+
 @NgModule({
   declarations: [
     AppComponent,
     PostFeedComponent,
-    LoginComponent
+    LoginComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
@@ -20,7 +37,11 @@ import { LoginComponent } from './login/login.component';
     FormsModule,  
     ReactiveFormsModule,  
     HttpClientModule,  
-    DataTablesModule  ,
+    BrowserAnimationsModule,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

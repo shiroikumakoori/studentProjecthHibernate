@@ -9,16 +9,16 @@ import { Observable } from 'rxjs';
 export class UserServiceService {
 
 
-  private  apiUrl = "http://localhost:8100/userService/";
+  private  apiUrl = "http://localhost:8080/userService/";
 
 
   
   private httpLink = {
     getAll:this.apiUrl + 
-    "/homePage/all",
+    "all",
 
     deletePostById: this.apiUrl + 
-    "/delete/",
+    "delete/",
 
     getEmployeeDetailById: this.apiUrl + 
     "/api/employee/getEmployeeDetailById",
@@ -40,10 +40,10 @@ export class UserServiceService {
     return this.http.put(this.httpLink.updateById+id, model);
   }
 
-  getAllPostIncludingMedia(): Observable<any> {  
+  getAllUser(): Observable<any> {  
     return this.http.get(this.httpLink.getAll);  
   }  
-  deleteById(id:number)
+  deleteById(id:String)
   {
     return this.http.delete(this.httpLink.deletePostById+id);
   }

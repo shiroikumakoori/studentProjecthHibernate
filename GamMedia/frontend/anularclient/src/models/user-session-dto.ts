@@ -2,8 +2,8 @@ export class UserSessionDTO {
 
     public id!:String;
 	
-	private firstName!:String;
-	private lastName!:String;
+	public firstName!:String;
+	public lastName!:String;
 	
 	// private Set<Role> roles!;
 	
