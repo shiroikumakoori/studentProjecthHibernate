@@ -5,6 +5,7 @@ export class Post {
 
 
     public id!:String;
+    public view!:String;
     public title!:String;
     public message!:String;
     public lastName!:String;

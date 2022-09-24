@@ -35,8 +35,9 @@ public class Post {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY )
 	private Long id ;
+	private Long views;
 	private String title;
-	private String message; 
+	private String message;  
 	
 //	@ManyToOne(targetEntity=User.class )
 //	

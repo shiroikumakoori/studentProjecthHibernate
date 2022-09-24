@@ -29,10 +29,9 @@ public class UserServiceImpl implements IUserService {
 	public User updateUserAccount(User user) {
 		// TODO fix ineffiency postCollection setting 
 	    System.out.println(" UserServiceImpl:updateUserAccount(): updating " );
-	    User old = userRepo.getReferenceById(user.getId());
-	   // old.setPost(user.getPost());
+	   
 	  
-		return   userRepo.save(old);
+		return   userRepo.save(user);
 	}
 
 	@Override

@@ -12,9 +12,9 @@ import com.GamMedia.userService.entity.User;
 
 @Repository
 public interface DatabaseFileRepo extends JpaRepository<DatabaseFile,Long>{
-//	@Query("SELECT p FROM DatabaseFile p WHERE (p.postid) = : postid ")
-	@Query("SELECT p FROM DatabaseFile p")
-	Collection<DatabaseFile> getFilesByPostId(
-			@Param("postid")Long post_id);
-}
 
+	@Query("SELECT p FROM DatabaseFile p WHERE (p.post.id) =  ?1 ")
+	Collection<DatabaseFile> getFilesByPostId(
+			Long postid);
+	//Collection<DatabaseFile> getFilesByPostId(Long post_id);
+}

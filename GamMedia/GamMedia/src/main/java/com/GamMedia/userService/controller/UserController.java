@@ -38,11 +38,11 @@ public class UserController {
         System.out.println("Inside saveUser of UserController");
          userService.deletePost(id);
     }
-    @PostMapping("/update/{id}")
-    public User updateUser(@PathVariable("id") Long id) {
+    @PutMapping("/update")
+    public User updateUser(@RequestBody User user) {
         //log.info("Inside saveUser of UserController");
         System.out.println("Inside saveUser of UserController");
-        return userService.updateUserAccount( userService.getUserById(id));
+        return userService.updateUserAccount(user);
     }
     @GetMapping("/all")
     public List<UserSessionDTO> getAllUser() {

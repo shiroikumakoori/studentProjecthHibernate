@@ -52,7 +52,7 @@ public class DatabaseFileServiceImpl implements IDatabaseFileService {
 
 	@Override
 	public Collection<DatabaseFile> getFilesByPostId(Long postId) {
-		// TODO Auto-generated method stub
+		System.out.println(postId);
 		return dbFileRespository.getFilesByPostId(postId);
 	}
 

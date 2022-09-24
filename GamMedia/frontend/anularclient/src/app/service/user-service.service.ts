@@ -17,6 +17,8 @@ export class UserServiceService {
     getAll:this.apiUrl + 
     "all",
 
+    getUser:this.apiUrl,
+
     deletePostById: this.apiUrl + 
     "delete/",
 
@@ -24,7 +26,7 @@ export class UserServiceService {
     "/api/employee/getEmployeeDetailById",
 
     updateById: this.apiUrl+
-    "/update/",
+    "update/",
 
     save: this.apiUrl + 
     "/create"
@@ -35,9 +37,9 @@ export class UserServiceService {
   create(model :any){
     return this.http.post(this.httpLink.save, model);
   }
-  updateById(model:any , id:number)
+  updateById(model:any , id:String)
   {
-    return this.http.put(this.httpLink.updateById+id, model);
+    return this.http.put(this.httpLink.updateById, model);
   }
 
   getAllUser(): Observable<any> {  
@@ -46,6 +48,10 @@ export class UserServiceService {
   deleteById(id:String)
   {
     return this.http.delete(this.httpLink.deletePostById+id);
+  }
+  getUserById(id:String): Observable<any>
+  {
+    return this.http.get(this.httpLink.getUser+id);  
   }
 
   // getALlPostWithouIncludingtMedia(): Observable<any> {  

@@ -170,16 +170,21 @@ public class PostController {
     		dto.setFirstName(userDto.getFirstName());
     		dto.setLastName(userDto.getLastName());
     		//dto.setResource(new ArrayList());
-    		System.out.println("post id:"+ post.getId());
-    		for ( DatabaseFile file : fileService.getFilesByPostId(post.getId())) {
-    			//dto.setResource(loadMedia(file));
-    			///dto.setImageUrl("localhost:8080/postService/downloadFile/62059d23-bba5-4243-be16-d23e4b73c0a4");
-    			//dto.getResource().add( loadMedia(file));
-    			System.out.println("file id:"+ file.getId());
-    			dto.setFileId(file.getId());
-    			dto.setFileByte(file.getData());
-    			//dto.setFileByte(new ByteArrayResource(file.getData()));
-			} 
+    		 Collection<DatabaseFile> l= fileService.getFilesByPostId(post.getId());
+    		 if(l != null)
+    		 {
+    			 
+    			System.out.println("post id:"+ post.getId());
+	    		for ( DatabaseFile file : l ) {
+	    			//dto.setResource(loadMedia(file));
+	    			///dto.setImageUrl("localhost:8080/postService/downloadFile/62059d23-bba5-4243-be16-d23e4b73c0a4");
+	    			//dto.getResource().add( loadMedia(file));
+	    			System.out.println("file id_postId:"+ file.getId() +" "+ file.getPost().getId());
+	    			dto.setFileId(file.getId());
+	    			dto.setFileByte(file.getData());
+	    			//dto.setFileByte(new ByteArrayResource(file.getData()));
+				} 
+    		 }
     		//downloadFile()
     		//TODO doesnt seem to work well with mulit files =.=
 //    		Collection< ResponseEntity<Resource>> files= new ArrayList();

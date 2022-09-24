@@ -1,0 +1,52 @@
+<p>admin works!</p>
+
+
+
+<h1>users</h1>
+<div id="userTable" *ngFor="let user of listOfUser" style="display: flex;">
+
+
+    <p>{{user.id  }}  </p>
+	<p> {{user.firstName}}  </p>
+    <p>{{user.lastName}}  </p>
+    <div >
+        <button (click)="onEditUserStart(user)" >edit</button>
+        <button (click)="onDeleteUserById(user.id)" >X</button>
+      </div>
+</div>
+
+<div *ngIf="isEditingUser" class="c_editBody" >
+    <h3>editing your post</h3>
+    <input #postTitle type="text" [(ngModel)]="editingUser.lastName">
+    <input #postMess type="text" [(ngModel)]="editingUser.firstName">
+    <button (click)="onEditUserDone()">done editing !</button>
+    <button (click)="onCancelEditingUser()">cancel</button>
+  </div>
+<br>
+<h1>posts</h1>
+
+<div *ngIf="isEditing" class="c_editBody" >
+    <h3>editing your post</h3>
+    <input #postTitle type="text" [(ngModel)]="editingPost.title">
+    <textarea #postMess type="text" [(ngModel)]="editingPost.message"></textarea>
+    <button (click)="onEditPostDone()">done editing !</button>
+  </div>
+<br>
+<div *ngFor="let post of ListOfPost" style="display: flex;">
+    <div class="singlePost" style="display: flex;">
+      
+      <label>
+      id: {{post.id}}  title: {{post.title}}
+      </label>
+      <div >
+        <button (click)="onEditPostStart(post)">edit</button>
+        <button (click)="deletePostById(post.id)">X</button>
+      </div>
+      <p>last name : {{post.lastName}}</p>
+      <p>first name: {{post.firstName}}</p>
+      <p> msg :{{post.message}}</p>
+
+
+    </div>
+    
+  </div>

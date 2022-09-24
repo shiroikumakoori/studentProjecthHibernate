@@ -18,6 +18,7 @@ public class PostFeedDTO {
 	private Long id;
 	private String lastName;
 	private String firstName;
+	private Long views;
 	
 	private String title;
 	private String message; 

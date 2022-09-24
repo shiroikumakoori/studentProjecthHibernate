@@ -7,13 +7,14 @@
 <!-- * * * * * * * to get started with your project! * * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
-<p> hi there </p>
+
 
 <div id="nav-bar"   >
   <div *ngIf="!user">
     <app-login></app-login>
   </div>
-  <div id="nav">
+
+  <div id="nav" *ngIf="user">
     <div id="nav-content">
 
       <div id="nav-left">
@@ -26,6 +27,7 @@
       <div id="nav-right" *ngIf="user">
         <div *ngIf="user">
           <button (click)="onLogOut()">Logout</button>
+          <button (click)="onEditProfile()">profile</button>
         </div>
 
       </div>
@@ -37,8 +39,22 @@
 
  
 </div>
+<div *ngIf="isEditingProfile">
+  <div class="singlePost" style="margin-top: 50px ">
+      
+    <div>
+      <!-- <button (click)="onEditPostStart(post)">edit</button>
+      <button (click)="deletePostById(post.id)">X</button> -->
+    </div>
+    <input type="text" [(ngModel)]="userFull.lastName" >
+    <input type="text" [(ngModel)]="userFull.firstName" >
+    <input type="text" [(ngModel)]="userFull.password" >
+    <button (click)="onUpdateProfile()">update </button>
+  </div>
+  
 
-<div *ngIf="!isAdmin && user">
+</div>
+<div *ngIf="!isAdmin && user && !isEditingProfile">
 
   <app-post-feed></app-post-feed>
   <router-outlet></router-outlet>

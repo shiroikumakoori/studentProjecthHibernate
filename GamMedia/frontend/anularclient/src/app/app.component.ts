@@ -1,7 +1,10 @@
 import { coerceStringArray } from '@angular/cdk/coercion';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { data } from 'jquery';
+import { UserFullDetailDTO } from 'src/models/user-full-detail-dto';
 import { UserSessionDTO } from 'src/models/user-session-dto';
+import { UserServiceService } from './service/user-service.service';
 
 
 @Component({
@@ -13,7 +16,10 @@ export class AppComponent {
   title = 'anularclient';
   user !:UserSessionDTO|null;
   isAdmin:boolean =false;
-  constructor(private router: Router)
+  userFull !:UserFullDetailDTO;
+
+  isEditingProfile:boolean = false;;
+  constructor(private router: Router, private userService:UserServiceService)
   {
     
   }
@@ -43,6 +49,25 @@ export class AppComponent {
       }
 
     
+    }
+  }
+  onUpdateProfile()
+  {
+    this.userService.updateById(this.userFull ,this.userFull.id).subscribe(data=>{
+      console.log("udpated");
+      this.onEditProfile();    
+    });
+  }
+  onEditProfile()
+  {
+    if(this.user != null)
+    {
+      this.userService.getUserById(this.user.id).subscribe(data=>{
+        this.userFull= data;
+        console.log(this.userFull)
+        this. isEditingProfile =! this.isEditingProfile;
+        console.log(this.isEditingProfile)
+      });
     }
   }
   onLogOut()

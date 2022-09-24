@@ -1,8 +1,8 @@
 export class UserFullDetailDTO {
 
-    public id!:Number;
-	public lastName!:String;
-	public firstName!:String;
+    public id!:String;
+	public lastName!:String |null |undefined ;
+	public firstName!:String |null;
 	public email!:string;
 	public userName!:String;
 	public password!:String;
