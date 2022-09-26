@@ -120,6 +120,8 @@ export class AdminComponent implements OnInit {
     });
   }
 
+
+
   getPostFeed()
   {
     console.log("get post feed")
@@ -127,9 +129,9 @@ export class AdminComponent implements OnInit {
       this.ListOfPost = data ;
  
     })  ;
-    this.ListOfPost.forEach(element => {
+        this.ListOfPost.forEach(element => {
 
-     });
+        });
   }
 
 }

@@ -1,8 +1,13 @@
 package com.GamMedia.postService.service;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Page;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.GamMedia.postService.entity.Post;
@@ -49,6 +54,14 @@ public class PostServiceImpl implements IPostService {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public Page<Post> getPagePost(Pageable pagable) {
+		// TODO Auto-generated method stub
+		return postRepo.findAll(pagable);
+	}
+
+
 	
 
 

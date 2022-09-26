@@ -1,23 +1,32 @@
 package com.GamMedia.postService.controller;
 
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.modelmapper.Converters.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -64,6 +73,7 @@ public class PostController {
 	@Autowired
 	private IUserService userService;
 	
+
 	@Autowired
 	private ModelMapper  mMapper; 
 	@Autowired
@@ -78,6 +88,7 @@ public class PostController {
     	try {
 //	    
 				Post post = this.mMapper.map(postDTO, Post.class);
+				post.setViews(0l);
 				post.setId(null);
 		        post.setUser( userService.getUserById(postDTO.getUserId()));
 		        Post newPost = postService.createPost(post);
@@ -99,6 +110,8 @@ public class PostController {
         {
         	
         	PostDTO dto =  mMapper.map(post, PostDTO.class);
+    		if(dto.getViews()==null) 
+				dto.setViews(0l);
         	return dto;
         }
         else
@@ -197,6 +210,56 @@ public class PostController {
 				
 		return list; 
 	}
+    @SuppressWarnings("unchecked")
+	@GetMapping("/homePage/section")
+    public Page<PostFeedDTO>  test (@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "1") int size)
+    {
+    	Pageable paging = PageRequest.of(page, size, Sort.by("createdDate"));
+    	   	
+    	return postService.getPagePost(paging).map( new Function<Post, PostFeedDTO>(){
+
+			@Override
+			public PostFeedDTO apply(Post t) {
+				UserSessionDTO userDto= userService.getUserDTOById( t.getUser().getId());
+				PostFeedDTO dto = mMapper.map(t, PostFeedDTO.class);
+				if(dto.getViews()==null) 
+					dto.setViews(0l);
+				
+				dto.setFirstName(userDto.getFirstName());
+	    		dto.setLastName(userDto.getLastName());
+	    		 Collection<DatabaseFile> l= fileService.getFilesByPostId(t.getId());
+	    		 if(l != null)
+	    		 {
+	    			 
+	    			System.out.println("post id:"+ t.getId());
+		    		for ( DatabaseFile file : l ) {
+		    			//dto.setResource(loadMedia(file));
+		    			///dto.setImageUrl("localhost:8080/postService/downloadFile/62059d23-bba5-4243-be16-d23e4b73c0a4");
+		    			//dto.getResource().add( loadMedia(file));
+		    			System.out.println("file id_postId:"+ file.getId() +" "+ file.getPost().getId());
+		    			dto.setFileId(file.getId());
+		    			dto.setFileByte(file.getData());
+		    			dto.setFileType(file.getFileType());
+
+					} 
+	    		 }
+				return dto;
+			}
+    		
+    	});
+
+    }
+    //Get all Post  rest APi
+//	public PostResponse getAllBlogs(
+//			@RequestParam(value="pageNo",defaultValue = AppConst.DEFAULT_PAGE_NUMBER,required = false) int pageNo,
+//			@RequestParam(value="pageSize",defaultValue = AppConst.DEFAULT_PAGE_SIZE, required = false)int pageSize,
+//			@RequestParam(value="sortBy", defaultValue =  AppConst.DEFAULT_SORT_BY , required= false)String sortBy,
+//			@RequestParam(value="sortDir",defaultValue = AppConst.DEFAULT_SORT_DIRECTION, required = false) String sortDir
+//			)
+//	{
+//		return postService.getAppPosts(pageNo, pageSize, sortBy, sortDir);
+//	}
+	
     
 	@PostMapping("/uploadFile")
 	public Response uploadFile(@RequestParam("file")MultipartFile file) {

@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class PostService {
-  private baseUrl = 'http://localhost:8080/postService/';  
+
   private  apiUrl = "http://localhost:8080/postService/";
 
   private httpLink = {
@@ -36,10 +36,13 @@ export class PostService {
     "downloadFile/",
     
     getPost:this.apiUrl,
+
+    getPostSection:this.apiUrl+
+    "homePage/section",
   }
   
   constructor(private http:HttpClient) { }
-  getPost(id:String)
+  getPost(id:String) :Observable<any>
   {
     return this.http.get(this.httpLink.getPost+id);
   }
@@ -68,6 +71,12 @@ export class PostService {
     return this.http.get(this.httpLink.getFile+id);
   }
 
+  getPostSection(request:any): Observable<any>
+  {
+    //section?page=1&size=3
+    return this.http.get(this.httpLink.getPostSection+
+      "?page="+request['page']+"&size="+request['size'])
+  }
   // getALlPostWithouIncludingtMedia(): Observable<any> {  
   //   return this.http.get(`${this.baseUrl}`+'students-list');  
   // }  

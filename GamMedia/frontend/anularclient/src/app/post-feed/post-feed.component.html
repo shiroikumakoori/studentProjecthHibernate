@@ -3,6 +3,7 @@
     <p>Post something !</p>
     <input #postTitle type="text">
     <textarea #postMess type="text"></textarea>
+    <textarea #postUrl type="text" ></textarea>
     <div id="post-preview">
       <img id="post-preview-image">
     </div>
@@ -14,20 +15,56 @@
           </label>
       </button>
   </mat-card-actions>
-    <button (click)="createPost(postTitle,postMess)">Post !</button>
+    <button (click)="createPost(postTitle,postMess, postUrl)">Post !</button>
 </div> 
 
 <div *ngIf="isEditing" class="c_editBody" >
   <h3>editing your post</h3>
   <input #postTitle type="text" [(ngModel)]="editingPost.title">
   <textarea #postMess type="text" [(ngModel)]="editingPost.message"></textarea>
+  <textarea #postMess type="text" [(ngModel)]="editingPost.urlEmbed"></textarea>
   <button (click)="onEditPostDone()">done editing !</button>
 </div>
-  
+
+
+
 <div *ngIf="!isEditing" >
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" [length]="totalElements" (page)="nextPage($event)"> </mat-paginator>
   <div *ngFor="let post of ListOfPost">
     <div class="singlePost">
+      <div style="background-color: black;">
+
+        <mat-card (click)="onSelectingPost(post)"   
+        routerLink="display-post" [queryParams]="{id: post.id}" queryParamsHandling="merge"
+        class="card" >
+          <mat-card-content>
+            <mat-card-title>{{post.title}}</mat-card-title>
+            <div *ngIf="post.fileByte">
+
+              <video controls *ngIf="isVideo(post.fileType)">
+                <source type ="{{post?.fileType}}" src="data:{{post?.fileType}};base64,{{post?.fileByte}}" style="width: 400px">
+              </video> 
       
+              <img  *ngIf="!isVideo(post.fileType)"
+                mat-card-image src="data:{{post.fileType}};base64,{{post?.fileByte}}" style="width: 400px"
+              alt="Not found" >
+            </div>
+      
+            <div *ngIf="post!.urlEmbed">
+              <iframe width="500" height="500"
+              [src]="post!.urlEmbed | safe"  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              
+            </div>
+            <div *ngIf="postBelongToUser(post)">
+              <mat-card-actions (click)="onEditPostStart(post)">edit</mat-card-actions>
+              <mat-card-actions (click)="deletePostById(post.id)">X</mat-card-actions>
+            </div>
+           
+            <mat-card-subtitle> {{post.views}}</mat-card-subtitle>
+            <mat-card-footer>{{post.createdDate}}</mat-card-footer>
+          </mat-card-content>
+        </mat-card>
+      </div>
       <label>
         {{post.title}}
       </label>
@@ -35,17 +72,14 @@
         <button (click)="onEditPostStart(post)">edit</button>
         <button (click)="deletePostById(post.id)">X</button>
       </div>
+      <p>{{post.createdDate}}</p>
+      <p>{{post.lastModifiedDate}}</p>
       <p>{{post.lastName}}</p>
       <p>{{post.firstName}}</p>
       <p>{{post.message}}</p>
-      <p>{{post.imageUrl}}</p>
-      <!-- <img src="{{post.imageUrl}}"> -->
-      <div *ngIf="post.fileByte">
-        <img  mat-card-image src="data:image/jpeg;base64,{{post?.fileByte}}" style="width: 400px"
-        alt="Not found" >
-      </div>
-      <p>{{post.view}}</p>
+
+
     </div>
-    
   </div>
+  <mat-paginator [pageSizeOptions]="[3,5, 10, 25, 100]" [pageSize]="5" [length]="totalElements" (page)="nextPage($event)"> </mat-paginator>
 </div>

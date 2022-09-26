@@ -1,6 +1,7 @@
-package com.GamMedia.emailservice;
+package com.GamMedia.emailservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +23,8 @@ public class EmailController {
 	  @Autowired
 	  private IUserService userService;
 	  
+	  @Autowired
+	  private BCryptPasswordEncoder passwordEncoder;
 	   
 	    // Sending a simple Email
 	    @PostMapping("/send/resetPassword")
@@ -31,12 +34,13 @@ public class EmailController {
 	    	User user= userService.getUserByEmail(email.getRecipient());
 	    	if(user!= null)
 	    	{	
+	    		String pw = makeid(5);
 	    		//details.setRecipient(email);
 	    		email.setSubject("reset your password");
 	    		email.setMsgBody(
-	    				"we have reset your password to 'Password123'. "
+	    				"we have reset your password to" + pw
 	    				);
-	    		user.setPassword("Password123");
+	    		user.setPassword( passwordEncoder.encode(pw ));
 	    		userService.updateUserAccount(user);
 		        String status
 		            = emailService.sendSimpleMail(email);
@@ -59,5 +63,15 @@ public class EmailController {
 	            = emailService.sendMailWithAttachment(details);
 	 
 	        return status;
+	    }
+	    private String makeid( int length) {
+	        String result           = "";
+	        String characters       = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	        int charactersLength = characters.length();
+	        for ( var i = 0; i < length; i++ ) {
+	          result += characters.charAt((int)Math.floor(Math.random() * 
+	     charactersLength));
+	       }
+	       return result;
 	    }
 }

@@ -10,3 +10,8 @@
 .c_editBody{
     background-color: aquamarine;
 }
+
+.card {
+    cursor: pointer;
+    background-color: lightblue;
+}

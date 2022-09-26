@@ -5,7 +5,7 @@ export class Post {
 
 
     public id!:String;
-    public view!:String;
+    public views!:number;
     public title!:String;
     public message!:String;
     public lastName!:String;
@@ -13,8 +13,10 @@ export class Post {
     public userId!:String;
     public fileId!:String;
     public fileByte!:any;
-  
-    public imageUrl!:string;
-    public safeUrl!:SafeUrl;
+    public fileType!:String;
+    public urlEmbed!:string;
+    public lastModifiedDate!:Date;
+	
+	public createdDate!:Date;
 
 }

@@ -1,6 +1,7 @@
 package com.GamMedia.payload;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -25,6 +26,12 @@ public class PostFeedDTO {
 	//private  ResponseEntity<Resource> resource;
 	private Long fileId;
 	private byte[] fileByte;
+	private String fileType;
+	
+	private String urlEmbed;
 	private Long userId;
+	private Date lastModifiedDate;
+	
+	protected Date createdDate;
 	
 }

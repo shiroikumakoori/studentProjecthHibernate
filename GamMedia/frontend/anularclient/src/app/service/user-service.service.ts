@@ -28,8 +28,16 @@ export class UserServiceService {
     updateById: this.apiUrl+
     "update/",
 
+    updatePassword: this.apiUrl+
+    "update/changePassword",
+
+    updateName: this.apiUrl+
+    "update/name",
+
     save: this.apiUrl + 
-    "/create"
+    "create",
+    logout: this.apiUrl +
+    "logout"
   }
   
   constructor(private http:HttpClient) { }
@@ -42,6 +50,15 @@ export class UserServiceService {
     return this.http.put(this.httpLink.updateById, model);
   }
 
+  updatePassword(model:any )
+  {
+    return this.http.put(this.httpLink.updatePassword, model);
+  }
+  updateName(model:any)
+  {
+    return this.http.put(this.httpLink.updateName,model);
+  }
+
   getAllUser(): Observable<any> {  
     return this.http.get(this.httpLink.getAll);  
   }  
@@ -52,6 +69,10 @@ export class UserServiceService {
   getUserById(id:String): Observable<any>
   {
     return this.http.get(this.httpLink.getUser+id);  
+  }
+  loginOut()
+  {
+    return this.http.get(this.httpLink.logout);
   }
 
   // getALlPostWithouIncludingtMedia(): Observable<any> {  

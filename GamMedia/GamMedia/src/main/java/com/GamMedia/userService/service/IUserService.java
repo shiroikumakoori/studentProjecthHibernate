@@ -7,11 +7,14 @@ import com.GamMedia.userService.entity.User;
 
 public interface IUserService {
 	
+
+	public String getCurrLoginUser();
 	public User createUserAccount( User user);
 	public UserSessionDTO getUserDTOById(Long id);
 	public User getUserById(Long id);
 	
 	public User getUserByUserNamePassword(String userName,String password); 
+	public User getUserByUserName(String userName); 
 	public User updateUserAccount(User user);
 	public UserSessionDTO updateUserAccount(UserSessionDTO user);
 	
@@ -23,5 +26,6 @@ public interface IUserService {
 	 User getUserByEmail(String email);
 	 
 	 public List<User> getAll();
+	void setCurrLoginUser(User user);
 
 }

@@ -7,7 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import {DataTablesModule} from 'angular-datatables';
 import { PostFeedComponent } from './post-feed/post-feed.component';
 import { LoginComponent } from './login/login.component';  
-
+import {MatPaginatorModule} from '@angular/material/paginator'
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -21,6 +21,8 @@ import {MatIconModule} from '@angular/material/icon';
 
 import {  MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AdminComponent } from './admin/admin.component';
+import { SafePipe } from './safe.pipe';
+import { PostComponent } from './post/post.component';
 
 
 
@@ -29,7 +31,9 @@ import { AdminComponent } from './admin/admin.component';
     AppComponent,
     PostFeedComponent,
     LoginComponent,
-    AdminComponent
+    AdminComponent,
+    SafePipe,
+    PostComponent
   ],
   imports: [
     BrowserModule,
@@ -42,6 +46,7 @@ import { AdminComponent } from './admin/admin.component';
     MatCardModule,
     MatIconModule,
     MatDialogModule,
+    MatPaginatorModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

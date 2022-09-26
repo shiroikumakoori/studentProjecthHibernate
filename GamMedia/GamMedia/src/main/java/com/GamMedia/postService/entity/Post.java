@@ -19,6 +19,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.GamMedia.userService.entity.Auditable;
 import com.GamMedia.userService.entity.User;
 
 import lombok.AllArgsConstructor;
@@ -30,7 +31,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table
-public class Post {
+public class Post extends Auditable<String> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY )
@@ -38,6 +39,7 @@ public class Post {
 	private Long views;
 	private String title;
 	private String message;  
+	private String urlEmbed; 
 	
 //	@ManyToOne(targetEntity=User.class )
 //	

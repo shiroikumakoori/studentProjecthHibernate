@@ -14,6 +14,7 @@ import com.GamMedia.userService.entity.User;
 @Service
 public class UserServiceImpl implements IUserService {
 
+	public static  User currUser;
 	@Autowired
 	private UserRepo userRepo;
 	
@@ -102,6 +103,23 @@ public class UserServiceImpl implements IUserService {
 	public List<User> getAll() {
 		// TODO Auto-generated method stub
 		return userRepo.findAll();
+	}
+
+	@Override
+	public User getUserByUserName(String userName) {
+		// TODO Auto-generated method stub
+		return userRepo.getUserByUserName(userName);
+	}
+
+	@Override
+	public String getCurrLoginUser() {
+		// TODO Auto-generated method stub
+		return  currUser.getUserName();
+	}
+	@Override
+	public void   setCurrLoginUser(User user) {
+		// TODO Auto-generated method stub
+		currUser = user;
 	}
 
 }

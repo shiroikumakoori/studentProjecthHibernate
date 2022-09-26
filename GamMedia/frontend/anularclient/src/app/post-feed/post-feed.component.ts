@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { map, post } from 'jquery';
 
+import { Pipe, PipeTransform } from '@angular/core';
+
 import { Post } from 'src/models/post';
 import { UserSessionDTO } from 'src/models/user-session-dto';
 import { PostService } from '../service/post.service';
@@ -8,17 +10,22 @@ import { NgModel } from '@angular/forms';
 import { FileService } from '../service/file.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Observable, Observer } from 'rxjs';
+import { PageEvent } from '@angular/material/paginator';
+
 
 @Component({
   selector: 'app-post-feed',
   templateUrl: './post-feed.component.html',
   styleUrls: ['./post-feed.component.css']
 })
-export class PostFeedComponent implements OnInit {
+
+export class PostFeedComponent implements OnInit  {
 
   ListOfPost: Post[] = [];
+  selectedPost!:Post;
   user !:UserSessionDTO;
   selectImageFile! : File;
+  totalElements: number = 0;
 
 
   editingPost!:Post ;
@@ -29,17 +36,29 @@ export class PostFeedComponent implements OnInit {
     private domSanitizer:DomSanitizer ){
 
   }
-  // myReader.onloadend = (e) => {
-  //   this.base64Image = this.domSanitizer.bypassSecurityTrustUrl(myReader.result);
-  //   console.log(this.base64Image);
-  // }
+
+
+  onSelectingPost(post:Post)
+  {
+    this.selectedPost = post;
+  }
 
   ngOnInit() {  
+    //this.getPostFeed()
+    let request:any = {};
+    request['page'] = 0;
+    request['size'] = 3;
+    this.getProducts(request);
+    // this.postService.getAllPostIncludingMedia().subscribe(data =>{  
+    //   this.ListOfPost = data ;
+    //   this.ListOfPost.forEach(element => {
   
-    this.postService.getAllPostIncludingMedia().subscribe(data =>{  
-      this.ListOfPost = data ;
+    //     console.log(element);
+  
+  
+    //    });
 
-    })  
+    // })  
     let text =  localStorage.getItem('uDTO');
     if(text !=null){
       this.user = JSON.parse( text);
@@ -121,12 +140,14 @@ createFile(id:String)
 
 //CRUD *---------------------------------
 
-  createPost(title:HTMLInputElement ,msg:HTMLTextAreaElement)
+  createPost(title:HTMLInputElement ,msg:HTMLTextAreaElement, url:HTMLTextAreaElement)
   {
     console.log("creating post");
     let  post:Post = new Post();
     post.title = title.value;
     post.message= msg.value;
+    post.urlEmbed= url.value;
+    console.log(post.urlEmbed)
     let text =  localStorage.getItem('uDTO');
     if(text != null){
       let user :UserSessionDTO= JSON.parse( text);
@@ -211,18 +232,47 @@ createFile(id:String)
     console.log("get post feed")
     this.postService.getAllPostIncludingMedia().subscribe(data =>{  
       this.ListOfPost = data ;
+   
+      this.ListOfPost.forEach(element => {
+  
+        console.log(element);
+  
+  
+       });
  
     })  ;
-    this.ListOfPost.forEach(element => {
-      // element.safeUrl =  this.domSanitizer.bypassSecurityTrustUrl(element.imageUrl);
-      // console.log(element.safeUrl);
-      console.log(element);
-      // this.fileService.getById(element.fileId).subscribe(data=>{
-      //   console.log(data);
-      // });
-
-     });
   }
+  isVideo(fileType:String )
+  {
+    if(fileType.startsWith('video'))
+    {
+      return true;
+    }
+    else return false;
+  }
+  private getProducts(request:any) {
+    console.log(request);
+    this.postService.getPostSection(request).subscribe(data => {
+        this.ListOfPost = data['content'];
+        this.totalElements = data['totalElements'];
+
+        
+        this.ListOfPost.forEach(element => {
+          console.log(element.urlEmbed)
+   
+         });
+    }
+    , error => {
+        console.log(error.error.message);
+    }
+    );
+  }
+  nextPage(event: PageEvent) {
+    let request:any = {};
+    request['page'] = event.pageIndex.toString();
+    request['size'] = event.pageSize.toString();
+    this.getProducts(request);
+}
 //   downloadFile(filename: string, projectId: number): Observable<any> {
 //     return this.http.get(`${this.baseUrl}/file/download/` + filename + '/' + projectId, { responseType: 'blob' }).pipe(map((response)=>{
 //         return {

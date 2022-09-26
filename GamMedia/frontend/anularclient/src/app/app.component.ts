@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { data } from 'jquery';
 import { UserFullDetailDTO } from 'src/models/user-full-detail-dto';
+import { UserNameDTO } from 'src/models/user-name-dto';
+import { UserPassWordDTO } from 'src/models/user-pass-word-dto';
 import { UserSessionDTO } from 'src/models/user-session-dto';
 import { UserServiceService } from './service/user-service.service';
 
@@ -15,13 +17,17 @@ import { UserServiceService } from './service/user-service.service';
 export class AppComponent {
   title = 'anularclient';
   user !:UserSessionDTO|null;
+  
   isAdmin:boolean =false;
   userFull !:UserFullDetailDTO;
+  userNameDTO!:UserNameDTO;
+  userPasswordDTO !:UserPassWordDTO;
 
   isEditingProfile:boolean = false;;
   constructor(private router: Router, private userService:UserServiceService)
   {
-    
+    this.userNameDTO = new UserNameDTO();
+    this.userPasswordDTO = new UserPassWordDTO();
   }
   hasLogin()
   {
@@ -35,7 +41,8 @@ export class AppComponent {
       this.user = JSON.parse( text);
       if(this.user != null)
       {
-
+        this.userNameDTO.id = this.user.id;
+        this.userPasswordDTO.id = this.user.id; 
         if(this.user.firstName =="ADMIN" && this.user.lastName =="ADMIN")
         {
           this.isAdmin=true;
@@ -51,11 +58,19 @@ export class AppComponent {
     
     }
   }
-  onUpdateProfile()
+  onUpdateUserName()
   {
-    this.userService.updateById(this.userFull ,this.userFull.id).subscribe(data=>{
+    this.userService.updateName(this.userNameDTO ).subscribe(data=>{
       console.log("udpated");
       this.onEditProfile();    
+    });
+  }
+  updateUserPassword()
+  {
+    console.log(this.userPasswordDTO.password);
+    this.userService.updatePassword(this.userPasswordDTO).subscribe(data=>
+    {
+      console.log(data);
     });
   }
   onEditProfile()
@@ -63,10 +78,9 @@ export class AppComponent {
     if(this.user != null)
     {
       this.userService.getUserById(this.user.id).subscribe(data=>{
-        this.userFull= data;
+        this.userNameDTO = data ; 
         console.log(this.userFull)
         this. isEditingProfile =! this.isEditingProfile;
-        console.log(this.isEditingProfile)
       });
     }
   }
@@ -74,6 +88,9 @@ export class AppComponent {
   {
     localStorage.removeItem('uDTO');
     this.user =null ;
+    this.userService.loginOut().subscribe(data=>{
+      
+    })
     location.reload();
   }
 
@@ -86,7 +103,8 @@ export class AppComponent {
       this.user = JSON.parse( text);
       if(this.user != null)
       {
-
+        this.userNameDTO.id = this.user.id;
+        this.userPasswordDTO.id = this.user.id; 
         if(this.user.firstName =="ADMIN" && this.user.lastName =="ADMIN")
         {
           this.isAdmin=true;

@@ -7,7 +7,7 @@
 <!-- * * * * * * * to get started with your project! * * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
-
+<router-outlet></router-outlet>
 
 <div id="nav-bar"   >
   <div *ngIf="!user">
@@ -39,17 +39,26 @@
 
  
 </div>
+
+<router-outlet></router-outlet>
+
+
 <div *ngIf="isEditingProfile">
   <div class="singlePost" style="margin-top: 50px ">
-      
+    
     <div>
       <!-- <button (click)="onEditPostStart(post)">edit</button>
-      <button (click)="deletePostById(post.id)">X</button> -->
-    </div>
-    <input type="text" [(ngModel)]="userFull.lastName" >
-    <input type="text" [(ngModel)]="userFull.firstName" >
-    <input type="text" [(ngModel)]="userFull.password" >
-    <button (click)="onUpdateProfile()">update </button>
+        <button (click)="deletePostById(post.id)">X</button> -->
+      </div>
+      <h2>chaneg name</h2>
+      <input type="text" [(ngModel)]="userNameDTO.lastName" >
+      <input type="text" [(ngModel)]="userNameDTO.firstName" >
+    <button (click)="onUpdateUserName()">update </button>
+    <h2>change password </h2>
+    <input type="password" [(ngModel)]="userPasswordDTO.password" placeholder="old password" >
+    <input type="password" [(ngModel)]="userPasswordDTO.newPassword" placeholder="new password" >
+    <input type="password" [(ngModel)]="userPasswordDTO.newPassword" placeholder="confrim new password" >
+    <button (click)="updateUserPassword()">update </button>
   </div>
   
 
@@ -57,9 +66,11 @@
 <div *ngIf="!isAdmin && user && !isEditingProfile">
 
   <app-post-feed></app-post-feed>
-  <router-outlet></router-outlet>
 </div>
 <div *ngIf="isAdmin">
 
   <app-admin></app-admin>
 </div>
+
+
+

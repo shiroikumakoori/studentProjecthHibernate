@@ -1,5 +1,6 @@
 package com.GamMedia.userService.controller;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PrePostAnnotationSecurityMetadataSource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +24,7 @@ import com.GamMedia.payload.UserSessionDTO;
 import com.GamMedia.postService.entity.Post;
 import com.GamMedia.userService.entity.User;
 import com.GamMedia.userService.service.IUserService;
+import com.GamMedia.userService.service.SpringSecurityAuditorAware;
 
 
 @CrossOrigin(origins = "*")
@@ -34,7 +37,12 @@ public class UserLoginController {
 	@Autowired
 	private IUserService userService;
 	@Autowired
-	private ModelMapper  mMapper; 
+	private ModelMapper  mMapper;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+	
+	
 	
 //    @PostMapping("/create")
 //    public User saveUser(@RequestBody User user) {
@@ -43,13 +51,18 @@ public class UserLoginController {
 //        return userService.createUserAccount(user);
 //    }
 
+
+	
 	@PostMapping("/attempLogin")
 	public UserSessionDTO loginIn(@RequestBody UserLoginInDTO user , HttpServletRequest request)
 	{	
-		User u = userService.getUserByUserNamePassword(user.getUserName(), user.getPassword());
+		
+		//User u = userService.getUserByUserNamePassword(user.getUserName(), passwordEncoder.encode(user.getPassword()));
+		User u = userService.getUserByUserName(user.getUserName());
+		boolean match = passwordEncoder.matches(user.getPassword(), u.getPassword());
+		//org.springframework.security.core.userdetails.User uu=  new org.springframework.security.core.userdetails.User( user., user.getPassword(), null);
 		//password passed , setting session 
-		if(u != null) {		
-			
+		if(u != null && match ) {		
 			//UserSessionDTO uDTO = ConUserToUserSessionDTO(u);
 			UserSessionDTO uDTO = mMapper.map(user, UserSessionDTO.class);
 			uDTO.setFirstName( u.getFirstName());
@@ -62,6 +75,8 @@ public class UserLoginController {
 			request.getSession().setAttribute(getUserAttName(),uDTO);
 			System.out.println("Login in succesful : " );
 			//System.out.println(user.getUserName() );
+			//aware.setCurrUser(u.getUserName()); 
+			 userService.setCurrLoginUser(u);
 			return uDTO;
 		}
 		else
@@ -73,6 +88,9 @@ public class UserLoginController {
 		//return "redirect:userService/login/HomePage"; 
 		//return "redirect:localhost:8080/userService/login/homePage";
 	}
+//	private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
+//		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+//	}
 	
 	@GetMapping("/homePage")
 	public UserSessionDTO loginIn(HttpSession session)
@@ -85,6 +103,14 @@ public class UserLoginController {
 		}
 
 		System.out.println("please login");
+		return null; 
+	}
+	
+	@GetMapping("/logout")
+	public UserSessionDTO loginout()
+	{
+
+		userService.setCurrLoginUser(null);
 		return null; 
 	}
 	
