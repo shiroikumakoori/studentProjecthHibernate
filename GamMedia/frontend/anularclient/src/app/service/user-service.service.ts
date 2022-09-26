@@ -50,9 +50,9 @@ export class UserServiceService {
     return this.http.put(this.httpLink.updateById, model);
   }
 
-  updatePassword(model:any )
+  updatePassword(model:any ): Observable<any>
   {
-    return this.http.put(this.httpLink.updatePassword, model);
+    return this.http.post(this.httpLink.updatePassword, model);
   }
   updateName(model:any)
   {

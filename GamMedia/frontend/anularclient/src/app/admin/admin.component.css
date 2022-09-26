@@ -2,3 +2,13 @@
 {
     background-color: aqua;
 }
+
+.card {
+    margin: 20px;
+ 
+    background-color: lightblue;
+    border-radius: 10px;
+    padding: 20px;
+
+    border: 5px solid #000;
+}

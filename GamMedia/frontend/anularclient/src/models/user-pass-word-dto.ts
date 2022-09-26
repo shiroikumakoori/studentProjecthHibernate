@@ -4,5 +4,6 @@ export class UserPassWordDTO {
 	public password!:String;
 
 	public newPassword!:String;
+	public newPassword2!:String;
 	
 }

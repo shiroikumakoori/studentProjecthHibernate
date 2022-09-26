@@ -19,6 +19,15 @@ export class PostComponent implements OnInit {
 
      }
 
+  isVideo(fileType:String )
+  {
+    if(fileType.startsWith('video'))
+    {
+      return true;
+    }
+    else return false;
+  }
+
   ngOnInit(): void {
       this.activatedroute.queryParams.subscribe(params => {
         //console.log(params); // { order: "popular" }

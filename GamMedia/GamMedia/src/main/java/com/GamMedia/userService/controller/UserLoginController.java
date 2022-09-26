@@ -10,6 +10,11 @@ import javax.servlet.http.HttpSession;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PrePostAnnotationSecurityMetadataSource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -34,6 +39,7 @@ public class UserLoginController {
 	String[] attributeNames={ "Curr_LoginUser"};
 	String getUserAttName() {return attributeNames[0];}
 	
+
 	@Autowired
 	private IUserService userService;
 	@Autowired
@@ -53,40 +59,52 @@ public class UserLoginController {
 
 
 	
-	@PostMapping("/attempLogin")
-	public UserSessionDTO loginIn(@RequestBody UserLoginInDTO user , HttpServletRequest request)
+	@PostMapping(value ="/attempLogin",produces = "application/json")
+	public ResponseEntity loginIn(@RequestBody UserLoginInDTO user )
 	{	
 		
 		//User u = userService.getUserByUserNamePassword(user.getUserName(), passwordEncoder.encode(user.getPassword()));
 		User u = userService.getUserByUserName(user.getUserName());
-		boolean match = passwordEncoder.matches(user.getPassword(), u.getPassword());
 		//org.springframework.security.core.userdetails.User uu=  new org.springframework.security.core.userdetails.User( user., user.getPassword(), null);
 		//password passed , setting session 
-		if(u != null && match ) {		
-			//UserSessionDTO uDTO = ConUserToUserSessionDTO(u);
-			UserSessionDTO uDTO = mMapper.map(user, UserSessionDTO.class);
-			uDTO.setFirstName( u.getFirstName());
-			uDTO.setLastName(u.getLastName());
-			uDTO.setId(u.getId());
-			//uDTO.setPost(u.get)
-			if(uDTO.getId() == null) {
-				System.out.println("login in with null id for some reason");
+		if(u !=null)
+		{	
+			boolean match = passwordEncoder.matches(user.getPassword(), u.getPassword());
+			if(match ) {		
+				//UserSessionDTO uDTO = ConUserToUserSessionDTO(u);
+				UserSessionDTO uDTO = mMapper.map(user, UserSessionDTO.class);
+				uDTO.setFirstName( u.getFirstName());
+				uDTO.setLastName(u.getLastName());
+				uDTO.setId(u.getId());
+				uDTO.setRoles(u.getRoles());
+				//uDTO.setPost(u.get)
+				if(uDTO.getId() == null) {
+					System.out.println("login in with null id for some reason");
+				}
+				
+				System.out.println("Login in succesful : " );
+				//System.out.println(user.getUserName() );
+				//aware.setCurrUser(u.getUserName()); 
+				 userService.setCurrLoginUser(u);
+				 return ResponseEntity.ok()
+						 .header("login in okay")
+						 .body(uDTO);
+				//return uDTO;
 			}
-			request.getSession().setAttribute(getUserAttName(),uDTO);
-			System.out.println("Login in succesful : " );
-			//System.out.println(user.getUserName() );
-			//aware.setCurrUser(u.getUserName()); 
-			 userService.setCurrLoginUser(u);
-			return uDTO;
+			else
+			{
+				System.out.println("Login in fail ");
+				return ResponseEntity.badRequest()
+						 .header("password doesn't match")
+						 .body("password doesn't match");
+			}
 		}
-		else
-		{
-			System.out.println("Login in fail ");
-		}
-		//TODO put redirect here 
-		return null;
-		//return "redirect:userService/login/HomePage"; 
-		//return "redirect:localhost:8080/userService/login/homePage";
+		System.out.println("user name cant be found  ");
+		return ResponseEntity.badRequest()
+				 .header("")
+				 .body("user name cant be found ");
+	
+
 	}
 //	private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
 //		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());

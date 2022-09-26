@@ -103,16 +103,36 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public PostDTO getUserByID(@PathVariable("id") Long id) {
+    public PostFeedDTO getUserByID(@PathVariable("id") Long id) {
     	l.logToStream(this.getClass().getName() ,"getUserByID(): " + id );
         Post post = postService.getbyId(id);
         if(post != null)
         {
         	
-        	PostDTO dto =  mMapper.map(post, PostDTO.class);
-    		if(dto.getViews()==null) 
+        	PostFeedDTO dto =  mMapper.map(post, PostFeedDTO.class);
+        	UserSessionDTO userDto= userService.getUserDTOById( post.getUser().getId());
+        	if(dto.getViews()==null) 
 				dto.setViews(0l);
-        	return dto;
+			
+			dto.setFirstName(userDto.getFirstName());
+    		dto.setLastName(userDto.getLastName());
+    		 Collection<DatabaseFile> l= fileService.getFilesByPostId(post.getId());
+    		 if(l != null)
+    		 {
+    			 
+    			System.out.println("post id:"+ post.getId());
+	    		for ( DatabaseFile file : l ) {
+	    			//dto.setResource(loadMedia(file));
+	    			///dto.setImageUrl("localhost:8080/postService/downloadFile/62059d23-bba5-4243-be16-d23e4b73c0a4");
+	    			//dto.getResource().add( loadMedia(file));
+	    			System.out.println("file id_postId:"+ file.getId() +" "+ file.getPost().getId());
+	    			dto.setFileId(file.getId());
+	    			dto.setFileByte(file.getData());
+	    			dto.setFileType(file.getFileType());
+
+				} 
+    		 }
+			return dto;
         }
         else
         {      	
@@ -214,7 +234,7 @@ public class PostController {
 	@GetMapping("/homePage/section")
     public Page<PostFeedDTO>  test (@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "1") int size)
     {
-    	Pageable paging = PageRequest.of(page, size, Sort.by("createdDate"));
+    	Pageable paging = PageRequest.of(page, size, Sort.by("createdDate").descending());
     	   	
     	return postService.getPagePost(paging).map( new Function<Post, PostFeedDTO>(){
 

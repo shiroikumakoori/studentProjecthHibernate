@@ -2,3 +2,33 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+body{
+    
+    background-color: #0077b6 ;
+}
+#postSection
+{
+    
+    background-color: #00b4d8;
+    align-content: center;
+    margin: 20px;
+    padding: 20px;
+}
+
+
+
+.card {
+    margin: 20px;
+    cursor: pointer;
+    background-color: #00b4d8;
+    border-radius: 10px;
+    padding: 20px;
+    border: 5px solid black;
+
+   
+}
+
+.card:hover {
+    background-color: #caf0f8;
+}

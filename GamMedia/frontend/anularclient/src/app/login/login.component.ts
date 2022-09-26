@@ -4,6 +4,7 @@ import { LoginDTO } from 'src/models/login-dto';
 import { UserSessionDTO } from 'src/models/user-session-dto';
 import { UserFullDetailDTO } from 'src/models/user-full-detail-dto';
 import { EmailValidator } from '@angular/forms';
+import { first } from 'rxjs';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -65,6 +66,32 @@ export class LoginComponent implements OnInit {
     if(p.value == pc.value)
     {
       let user :UserFullDetailDTO = new UserFullDetailDTO();
+
+      if(u.value == "")
+      {
+        alert("user Name cannot be blank")
+        return ;
+      }
+      if(p.value != pc.value)
+      {
+        alert("password dont match")
+        return;
+      }
+      if(e.value =="")
+      {
+        alert("email cannot be blank")
+        return;
+      }
+      if(ln.value =="")
+      {
+        alert("please type a last name")
+        return; 
+      }
+      if(fn.value=="")
+      {
+        alert("please type a first name")
+        return; 
+      }
       user.userName = u.value;
     
 
@@ -74,8 +101,7 @@ export class LoginComponent implements OnInit {
       user.firstName = fn.value;
       user.email  = e.value;
       this.loginService.create(user).subscribe(data =>{  
-        
-        console.log("creating")
+        alert("account created")
         location.reload();
       }) ;;
     }
@@ -95,7 +121,10 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('uDTO',JSON.stringify(uDTO));
     //this.dtTrigger.next();  
     location.reload();
-    })  ;
+    },(err)=>{
+      alert("user name or password dont match ")
+    }
+    )  ;
   }
 }
 export enum STATES{

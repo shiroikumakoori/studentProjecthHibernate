@@ -1,7 +1,4 @@
-.singlePost
-{
-    background-color: brown;
-}
+
 .body
 {
     background-color: grey;
@@ -11,7 +8,12 @@
     background-color: aquamarine;
 }
 
-.card {
-    cursor: pointer;
-    background-color: lightblue;
+
+
+
+
+
+#postFeed
+{
+   
 }

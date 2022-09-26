@@ -1,18 +1,38 @@
-<h1>THIS IS A POST </h1>
- <div >
-    <div class="singlePost">
+<div style="margin-top:20px ;">
+
+  <mat-card class="card" >
+    <mat-card-content>
       
-      <label>
-        {{post.title}}
-      </label>
-      <p>{{post.createdDate}}</p>
-      <p>{{post.lastModifiedDate}}</p>
-      <p>{{post.lastName}}</p>
-      <p>{{post.firstName}}</p>
-      <p>{{post.message}}</p>
-      <p>{{post.views}}</p>
+      <mat-card-title-group>
+        <mat-card-title>{{post.title}}</mat-card-title>
+        <mat-card-subtitle>post by {{post.lastName}} {{post.firstName}}</mat-card-subtitle>
+        
+      </mat-card-title-group>
+      <div *ngIf="post.fileByte" style="margin: 20px ;">
 
-
-    </div>
-  </div>
-<h1>END of POST </h1>
+        <video controls *ngIf="isVideo(post.fileType)" style="max-width: 1000px ; max-height: 600px ;">
+          <source type="{{post.fileType}}" src="data:{{post.fileType}};base64,{{post.fileByte}}" style="width: 400px">
+        </video>
+        
+        <img *ngIf="!isVideo(post.fileType)" mat-card-image src="data:{{post.fileType}};base64,{{post.fileByte}}"
+        style="width: 400px" alt="Not found">
+      </div>
+      <mat-card-content class="card-message">
+        {{post.message}}
+      </mat-card-content>
+      
+      <div *ngIf="post!.urlEmbed">
+        <iframe width="500" height="500" [src]="post!.urlEmbed | safe" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+        
+      </div>
+      
+      <mat-card-title-group>
+        
+        <mat-card-subtitle> {{post.views}}</mat-card-subtitle>
+        <mat-card-subtitle>{{post.createdDate}}</mat-card-subtitle>
+      </mat-card-title-group>
+    </mat-card-content>
+  </mat-card>
+</div>

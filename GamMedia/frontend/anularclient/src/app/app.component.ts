@@ -68,10 +68,19 @@ export class AppComponent {
   updateUserPassword()
   {
     console.log(this.userPasswordDTO.password);
-    this.userService.updatePassword(this.userPasswordDTO).subscribe(data=>
+    if(this.userPasswordDTO.newPassword != this.userPasswordDTO.newPassword2)
     {
-      console.log(data);
-    });
+      alert("new password dont match ")
+      return ;
+    }
+    this.userService.updatePassword(this.userPasswordDTO).subscribe(data=>{
+      alert("password changed ")
+    },(err)=>{
+      alert("old password dont match ")
+    }
+    )
+ 
+    ;
   }
   onEditProfile()
   {

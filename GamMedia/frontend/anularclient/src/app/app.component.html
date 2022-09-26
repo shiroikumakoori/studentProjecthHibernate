@@ -7,9 +7,9 @@
 <!-- * * * * * * * to get started with your project! * * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
-<router-outlet></router-outlet>
 
-<div id="nav-bar"   >
+
+<div id="nav-bar">
   <div *ngIf="!user">
     <app-login></app-login>
   </div>
@@ -37,40 +37,39 @@
   <div>
   </div>
 
- 
+
 </div>
 
-<router-outlet></router-outlet>
 
+<div style="margin-top: 50px;">
 
-<div *ngIf="isEditingProfile">
-  <div class="singlePost" style="margin-top: 50px ">
-    
-    <div>
-      <!-- <button (click)="onEditPostStart(post)">edit</button>
+  <div *ngIf="isEditingProfile">
+    <div class="singlePost" style="margin-top: 50px ">
+
+      <div>
+        <!-- <button (click)="onEditPostStart(post)">edit</button>
         <button (click)="deletePostById(post.id)">X</button> -->
       </div>
       <h2>chaneg name</h2>
-      <input type="text" [(ngModel)]="userNameDTO.lastName" >
-      <input type="text" [(ngModel)]="userNameDTO.firstName" >
-    <button (click)="onUpdateUserName()">update </button>
-    <h2>change password </h2>
-    <input type="password" [(ngModel)]="userPasswordDTO.password" placeholder="old password" >
-    <input type="password" [(ngModel)]="userPasswordDTO.newPassword" placeholder="new password" >
-    <input type="password" [(ngModel)]="userPasswordDTO.newPassword" placeholder="confrim new password" >
-    <button (click)="updateUserPassword()">update </button>
+      <input type="text" [(ngModel)]="userNameDTO.lastName">
+      <input type="text" [(ngModel)]="userNameDTO.firstName">
+      <button (click)="onUpdateUserName()">update </button>
+      <h2>change password </h2>
+      <input type="password" [(ngModel)]="userPasswordDTO.password" placeholder="old password">
+      <input type="password" [(ngModel)]="userPasswordDTO.newPassword" placeholder="new password">
+      <input type="password" [(ngModel)]="userPasswordDTO.newPassword2" placeholder="confrim new password">
+      <button (click)="updateUserPassword()">update </button>
+    </div>
+
+
   </div>
-  
+  <div *ngIf="!isAdmin && user && !isEditingProfile">
+
+    <app-post-feed></app-post-feed>
+  </div>
+  <div *ngIf="isAdmin">
+
+    <app-admin></app-admin>
+  </div>
 
 </div>
-<div *ngIf="!isAdmin && user && !isEditingProfile">
-
-  <app-post-feed></app-post-feed>
-</div>
-<div *ngIf="isAdmin">
-
-  <app-admin></app-admin>
-</div>
-
-
-

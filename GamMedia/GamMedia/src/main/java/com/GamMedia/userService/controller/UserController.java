@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
@@ -66,8 +67,8 @@ public class UserController {
         u.setLastName(user.getLastName());
         return userService.updateUserAccount(u);
     }
-    @PutMapping("/update/changePassword")
-    public String updateUserChangePassword(@RequestBody USerPaswordDTO user ) {
+    @PostMapping(value="/update/changePassword", produces = "application/json")
+    public ResponseEntity updateUserChangePassword(@RequestBody USerPaswordDTO user ) {
         //log.info("Inside saveUser of UserController");
     	User u = userService.getUserById(user.getId());
 		boolean match = passwordEncoder.matches(user.getPassword(), u.getPassword());
@@ -77,12 +78,16 @@ public class UserController {
         	u.setPassword( passwordEncoder.encode( user.getNewPassword()));
         	userService.updateUserAccount(u);
         	  System.out.println("change password");
-        	return "okay changed ";
+        		 return ResponseEntity.ok()
+        				 .header("okay")
+						 .body("login in okay ");
         }
         else
         {
         	  System.out.println("old password is wrong ");
-        	return "old password wrong";
+				return ResponseEntity.badRequest()
+						 .header("password doesn't match")
+						 .body("password doesn't match");
         }
         
     }

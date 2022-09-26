@@ -25,20 +25,10 @@ public class UserSessionDTO {
 	private String firstName;
 	private String lastName;
 	
-	private Set<Role> roles;
+	private String roles;
 	
 	private Set<Post> post;
 	
-	public void addPost(Post p)
-	{
-		if(post!=null)
-		{
-			post.add(p);
-		}
-		else
-		{
-			post = new HashSet<>();
-		}
-	}
+	
 	
 }

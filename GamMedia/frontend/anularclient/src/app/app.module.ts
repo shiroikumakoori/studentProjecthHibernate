@@ -8,8 +8,9 @@ import {DataTablesModule} from 'angular-datatables';
 import { PostFeedComponent } from './post-feed/post-feed.component';
 import { LoginComponent } from './login/login.component';  
 import {MatPaginatorModule} from '@angular/material/paginator'
-
+import {MatInputModule} from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatTableModule} from '@angular/material/table';
 
 import { environment } from 'src/environments/environment';
 
@@ -47,6 +48,8 @@ import { PostComponent } from './post/post.component';
     MatIconModule,
     MatDialogModule,
     MatPaginatorModule,
+    MatInputModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]
